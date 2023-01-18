@@ -17,11 +17,14 @@ const getEthereumContract = () => {
         signer,
         transactionContract
      });
+     return transactionContract;
 }
 
 export const TransactionProvider = ({ children }) => {
     const [connectedAccount, setConnectedAccount] = useState('');
-    const [formData, setFormData] = useState({ address: '', amount: '', keyword: '', message: ''});
+    const [formData, setFormData] = useState({ addressTo: '', amount: '', keyword: '', message: ''});
+    const [isLoading, setIsLoading] = useState(false);
+    const [transactionsCount, setTransactionsCount] = useState(localStorage.getItem('transactionCount'));
 
     const handleChange = (event, name) => {
         console.log("event => ", event, " name => ", name);
@@ -56,22 +59,50 @@ export const TransactionProvider = ({ children }) => {
         }
     }
 
-    // const sendTransaction = async () => {
-    //     try {
-    //         if(!ethereum) return alert("Pleas install metamask");
+    const sendTransaction = async () => {
+        try {
+            if(!ethereum) return alert("Pleas install metamask");
+            const { addressTo, amount, keyword, message} = formData;
+            const parsedValue = ethers.utils.parseEther(amount); // convert to GWEI
+            const transaction = getEthereumContract();
+            await ethereum.request(
+                {
+                    method: 'eth_sendTransaction',
+                    params: [
+                        {
+                            from: connectedAccount,
+                            to: addressTo,
+                            gas: '0x5208', // 21000 GWEI
+                            value: parsedValue._hex, // 0.00001
+                        }
+                    ]
+                }
+            )
 
+            // add to blockchain
+            const transactionHash = await transaction.addToBlockchain(addressTo, parsedValue, message, keyword);
 
-    //     } catch(error) {
-    //         console.error(error);
-    //     }
-    // }
+            setIsLoading(true);
+            console.log(`Loading - ${transactionHash.hash}`);
+            await transaction.wait()
+            setIsLoading(false);
+            console.log(`Finished - ${transactionHash.hash}`);
+
+            const transactionCount = transaction.getTransactionCount();
+            setTransactionsCount(transactionCount.toNumber());
+            console.log("transactionCount = ", transactionsCount);
+
+        } catch(error) {
+            console.error(error);
+        }
+    }
 
     useEffect(() => {
         isWalletConnected();
     }, []);
 
     return (
-        <TransactionContext.Provider value={{ connectWallet, connectedAccount, formData, handleChange }}>
+        <TransactionContext.Provider value={{ connectWallet, connectedAccount, formData, handleChange, sendTransaction }}>
             {children}
         </TransactionContext.Provider>
     )

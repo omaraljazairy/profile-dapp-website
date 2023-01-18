@@ -20,18 +20,22 @@ const Input = ({ placeholder, name, type, handleChange, value }) => (
       />
 )
 
-const handleSubmit = () => {
-    console.log("submit");
-}
-
-
 const Welcome = () => {
-    const { connectWallet, connectedAccount, formData, handleChange } = useContext(TransactionContext);
+    const { connectWallet, connectedAccount, formData, handleChange, sendTransaction } = useContext(TransactionContext);
     console.log("connectedAccount from context => ", connectedAccount); 
     // const connectWallet = () => {
     //     console.log("Connect to Wallet");
     // }
 
+    const handleSubmit = (e) => {
+        const { addressTo, amount, keyword, message} = formData;
+        e.preventDefault();
+
+        if(!addressTo || !amount || !keyword || !message) return;
+
+        sendTransaction();
+    }
+    
     return (
         <div className='flex w-full justify-center items-center'>
             <div className='flex md:flex-row flex-col items-start justify-between md:p-20 py-12 px-4'>
