@@ -5,6 +5,7 @@ import { contractABI, contractAddress } from '../utils/constants';
 
 export const TransactionContext = React.createContext();
 
+console.log("contractAddress => ", contractAddress);
 const { ethereum } = window;
 
 const getEthereumContract = () => {
@@ -59,6 +60,17 @@ export const TransactionProvider = ({ children }) => {
         }
     }
 
+    const getTransactionCount = async () => {
+        const contractInstance = getEthereumContract();
+        try {
+            const count = await contractInstance.getTransactionCount();
+            console.log("count => ", count);
+            
+        }catch(error){
+            console.error(error.message);
+        }
+    }
+
     const sendTransaction = async () => {
         try {
             if(!ethereum) return alert("Pleas install metamask");
@@ -79,30 +91,28 @@ export const TransactionProvider = ({ children }) => {
                 }
             )
 
+            setIsLoading(true);
             // add to blockchain
             const transactionHash = await transaction.addToBlockchain(addressTo, parsedValue, message, keyword);
-            const transactionCount = await transaction.getAllTransactions();
-            // setTransactionsCount(transactionCount);
-            console.log("transactionCount => ", transactionCount);
-
-            setIsLoading(true);
             console.log(`Loading - ${transactionHash.hash}`);
             await transactionHash.wait()
+            const count = await transaction.getTransactionCount();
+            console.log("count => ", count.toNumber());
             setIsLoading(false);
             console.log(`Finished - ${transactionHash.hash}`);
-
 
         } catch(error) {
             console.error(error);
         }
     }
 
+
     useEffect(() => {
         isWalletConnected();
     }, []);
 
     return (
-        <TransactionContext.Provider value={{ connectWallet, connectedAccount, formData, handleChange, sendTransaction }}>
+        <TransactionContext.Provider value={{ connectWallet, connectedAccount, formData, handleChange, sendTransaction, getTransactionCount }}>
             {children}
         </TransactionContext.Provider>
     )
