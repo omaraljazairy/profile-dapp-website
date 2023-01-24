@@ -29,5 +29,3 @@ main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
-
-// deployed to address 0x5D5b5C8ac0d273AA98eAA24e98F9C4c204aA0b92

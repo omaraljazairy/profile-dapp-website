@@ -1,0 +1,16 @@
+smartcontract/node_modules
+smartcontract/.env
+smartcontract/coverage
+smartcontract/coverage.json
+smartcontract/typechain
+smartcontract/typechain-types
+
+# Hardhat files
+smartcontract/cache
+smartcontract/artifacts
+
+smartcontract/hardhat.config.js
+
+# website
+website/.env
+package-lock.json
