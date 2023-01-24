@@ -26,10 +26,34 @@ export const TransactionProvider = ({ children }) => {
     const [formData, setFormData] = useState({ addressTo: '', amount: '', keyword: '', message: ''});
     const [isLoading, setIsLoading] = useState(false);
     const [transactionsCount, setTransactionsCount] = useState(localStorage.getItem('transactionCount'));
+    const [transactions, setTransactions] = useState([]);
 
     const handleChange = (event, name) => {
         console.log("event => ", event, " name => ", name);
         setFormData((prevState) => ({ ...prevState, [name]: event}));
+    }
+
+    const getAllTransactionsFromContract = async () => {
+        try {
+            if(!ethereum) return alert("Please install Metamask into your browser");
+            const contractInstance = getEthereumContract();
+            const availableTransactions = await contractInstance.getAllTransactions();
+            console.log("availableTrasactions => ", availableTransactions);
+            const structeredTransactions = availableTransactions.map((transaction) => (
+                {
+                    addressTo: transaction.receiver,
+                    addressFrom: transaction.from,
+                    timestamp: new Date(transaction.timestamp.toNumber() * 1000).toLocaleString(),
+                    message: transaction.message,
+                    keyword: transaction.keyword,
+                    amount: parseInt(transaction.amount._hex) / (10 ** 18)
+                }
+            ));
+            setTransactions(structeredTransactions);
+            console.log("structeredTransactions => ", structeredTransactions);
+        }catch(error){
+            console.error(error.message);
+        }
     }
 
     const isWalletConnected = async () => {
@@ -40,6 +64,7 @@ export const TransactionProvider = ({ children }) => {
     
             if(accounts.length) {
                 setConnectedAccount(accounts[0]);
+                getAllTransactionsFromContract();
             }
             console.log("accounts => ", accounts);
         } catch (error) {
@@ -60,11 +85,15 @@ export const TransactionProvider = ({ children }) => {
         }
     }
 
-    const getTransactionCount = async () => {
+    const updateTranactionsCount = async () => {
         const contractInstance = getEthereumContract();
         try {
             const count = await contractInstance.getTransactionCount();
-            console.log("count => ", count);
+            // set the transactions count and store them in the local storage
+            console.log("count => ", count.toNumber());
+            setTransactionsCount(count.toNumber());
+            window.localStorage.setItem("transactionCount", count);            
+            console.log("transactionsCount => ", transactionsCount);
             
         }catch(error){
             console.error(error.message);
@@ -95,9 +124,9 @@ export const TransactionProvider = ({ children }) => {
             // add to blockchain
             const transactionHash = await transaction.addToBlockchain(addressTo, parsedValue, message, keyword);
             console.log(`Loading - ${transactionHash.hash}`);
-            await transactionHash.wait()
-            const count = await transaction.getTransactionCount();
-            console.log("count => ", count.toNumber());
+            await transactionHash.wait();
+            updateTranactionsCount();
+            getAllTransactionsFromContract();
             setIsLoading(false);
             console.log(`Finished - ${transactionHash.hash}`);
 
@@ -112,7 +141,18 @@ export const TransactionProvider = ({ children }) => {
     }, []);
 
     return (
-        <TransactionContext.Provider value={{ connectWallet, connectedAccount, formData, handleChange, sendTransaction, getTransactionCount }}>
+        <TransactionContext.Provider value={
+            { 
+                connectWallet, 
+                connectedAccount, 
+                formData, 
+                handleChange, 
+                sendTransaction, 
+                transactionsCount, 
+                isLoading,
+                transactions
+            }
+        }>
             {children}
         </TransactionContext.Provider>
     )

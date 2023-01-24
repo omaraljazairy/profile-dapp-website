@@ -22,7 +22,7 @@ const Input = ({ placeholder, name, type, handleChange, value }) => (
 )
 
 const Welcome = () => {
-    const { connectWallet, connectedAccount, formData, handleChange, sendTransaction, getTransactionCount } = useContext(TransactionContext);
+    const { connectWallet, connectedAccount, formData, handleChange, sendTransaction, transactionsCount, isLoading } = useContext(TransactionContext);
     console.log("connectedAccount from context => ", connectedAccount); 
     // const connectWallet = () => {
     //     console.log("Connect to Wallet");
@@ -37,11 +37,6 @@ const Welcome = () => {
         sendTransaction();
     }
 
-    const handleCount = () => {
-        console.log("get count");
-        getTransactionCount();
-    }
-    
     return (
         <div className='flex items-center justify-center w-full'>
             <div className='flex flex-col items-start justify-between px-4 py-12 md:flex-row md:p-20'>
@@ -93,7 +88,7 @@ const Welcome = () => {
                         <Input placeholder="Enter Message" name="message" type="text" handleChange={handleChange} />
                         <div className='h-[1px] w-full bg-gray-400 my-2' />
 
-                        {false ? (
+                        {isLoading ? (
                             <Loader />
                         ) : (
                             <button
@@ -106,13 +101,7 @@ const Welcome = () => {
                             </button>
                         )}
                         <div>
-                        <button
-                              type="button"
-                              onClick={handleCount}
-                              className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer"
-                            >
-                                getTransactionCount
-                            </button>
+                            <h2 className="font-bold text-yellow-200">Total Transactions: {transactionsCount ? transactionsCount : 0}</h2>
                         </div>
                     </div>
                 </div>

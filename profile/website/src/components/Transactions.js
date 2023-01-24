@@ -1,6 +1,5 @@
 import React, { useContext} from 'react';
 import { TransactionContext } from '../context/TransactionContext';
-import dummyData from '../utils/dummyData';
 import { shortenAddress } from '../utils/shortenAddress';
 import useFetch from '../hooks/useFetch';
 
@@ -38,19 +37,14 @@ const TransactionCard = ( {addressTo, addressFrom, timestamp, message, keyword, 
                 <div className="p-3 px-5 -mt-5 bg-black shadow-2xl w-max rounded-3xl">
                     <p className="text-[#37c7da] font-bold">{timestamp}</p>
                 </div>
-                
-
             </div>
-
         </div>
     )
-
-
 }
 
 
 const Transactions = () => {
-    const { connectedAccount } = useContext(TransactionContext);
+    const { connectedAccount, transactions } = useContext(TransactionContext);
 
     return (
         <div className="flex items-center justify-center w-full 2xl:px-20 gradient-bg-transactions">
@@ -65,7 +59,7 @@ const Transactions = () => {
                     </h3>
                 )}
                 <div className="flex flex-wrap items-center justify-center mt-10">
-                    {dummyData.reverse().map((transaction, index) => (
+                    {transactions.reverse().map((transaction, index) => (
                         <TransactionCard key={index} {...transaction} />
                     ))}
 
