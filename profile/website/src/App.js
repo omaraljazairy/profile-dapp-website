@@ -1,14 +1,23 @@
-import { Navbar, Footer, Welcome, Services, Transactions } from "./components";
-const App = () => {
+import { Route, Router, Switch } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import { Navbar, Home, Services, Transactions } from "./components";
+
+export const history = createBrowserHistory()
+
+const App = () => {  
   return (
     <div>
-      <div className="gradient-bg-welcome">
-        <Navbar />
-        <Welcome />
+      <div className="gradient-bg-Home">
+        <Router history={history}>
+          <Navbar />
+          <Switch>
+            <Route path='/home' component={Home} />
+            <Route exact path='/transactions' component={Transactions} />
+            <Route exact path='/services' component={Services} />
+            <Route path="*" component={Home} />
+          </Switch>
+        </Router>
       </div>
-      <Services />
-      <Transactions />
-      <Footer />
   </div>
   )
 }
