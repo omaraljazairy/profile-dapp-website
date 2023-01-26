@@ -1,53 +1,85 @@
 import { useState } from 'react';
-import { HiMenuAlt4 } from 'react-icons/hi';
-import { AiOutlineClose } from 'react-icons/ai';
+import { Disclosure } from '@headlessui/react'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { NavLink } from 'react-router-dom';
 
-import logo from '../images/logo192.png';
-
-const NavbarItem = ({ title, classProps }) => {
-    return (
-        <li className={`mx-4 cursor-pointer ${classProps}`}>
-            {title}
-        </li>
-    )
-}
+const activeClass = "inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-indigo-500";
+const inActiveClass = "inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700";
 
 const Navbar = () => {
-    const [toggleMenu, setToggleMenu] = useState(false);
-    return (
-        <nav className='w-full flex md:justify-center justify-between items-center p-4'>
-            <div className="md:flex-[0.5] flex-initial justify-center items-center">
-                <img src={logo} alt="logo" className='w-32 cursor-pointer'/>
+  const [activeBtn, setActiveBtn] = useState(0);
+
+  const handleActiveBtn = (btnNr) => {
+      console.log("btnNr received => ", btnNr);
+      setActiveBtn(btnNr);
+  }
+  console.log("activeBtn => ", activeBtn);
+
+  return (
+    <Disclosure as="nav" className="bg-white shadow">
+      {({ open }) => (
+        <>
+          <div className="px-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="relative flex justify-between h-16">
+              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                {/* Mobile menu button */}
+                <Disclosure.Button className="inline-flex items-center justify-center p-2 text-gray-400 rounded-md hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                  <span className="sr-only">Open main menu</span>
+                  {open ? (
+                    <XMarkIcon className="block w-6 h-6" aria-hidden="true" />
+                  ) : (
+                    <Bars3Icon className="block w-6 h-6" aria-hidden="true" />
+                  )}
+                </Disclosure.Button>
+              </div>
+              <div className="flex items-center justify-center flex-1 sm:items-stretch sm:justify-center">
+                <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
+                  <div className={activeBtn === 0 ? activeClass : inActiveClass}>
+                    <NavLink to='home' onClick={() => handleActiveBtn(0)}>Home</NavLink>
+                  </div>
+                  <div className={activeBtn === 1 ? activeClass : inActiveClass}>
+                    <NavLink to='transactions' onClick={() => handleActiveBtn(1)}>Transactions</NavLink>
+                  </div>
+                  <div className={activeBtn === 2 ? activeClass : inActiveClass}>
+                    <NavLink to='services' onClick={() => handleActiveBtn(2)}>Services</NavLink>
+                  </div>
+                </div>
+              </div>
             </div>
-            <ul className="text-white md:flex hidden list-none flex-row justify-between items-center flex-initial">
-                {["Market", "Exchange", "Tutorials", "Wallets"].map((item, index) => (
-                    <NavbarItem key={index} title={item} />
-                ))}
-                <li className='bg-[#2952e3] py-2 px-7 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd]'>
-                    Login
-                </li>
-            </ul>
-            <div className='flex relative'>
-                {toggleMenu
-                ? <AiOutlineClose fontSize={28} className="text-white md:hidden cursor-pointer" onClick={() => setToggleMenu(false)} />
-                : <HiMenuAlt4 fontSize={28} className="text-white md:hidden cursor-pointer" onClick={() => setToggleMenu(true)}/>
-                }
-                {toggleMenu && (
-                    <ul className='z-10 fixed top-0 -right-2 p-3 w-[70vw] h-screen shadow-2xl md:hidden list-none flex flex-col justify-start items-end rounded-md blue-glassmorphism text-white animate-slide-in'>
-                        <li className='text-xl w-full my-2'>
-                            <AiOutlineClose onClick={() => setToggleMenu(false)} />
-                            {["Market", "Exchange", "Tutorials", "Wallets"].map((item, index) => (
-                            <NavbarItem key={index} title={item} classProps="my-2 text-lg" />
-                            ))}
-                        </li>
-                    </ul>
-                )}
+          </div>
 
+          <Disclosure.Panel className="sm:hidden">
+            <div className="pt-2 pb-4 space-y-1">
+              {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
+              <Disclosure.Button
+                as="a"
+                href="#"
+                className="block py-2 pl-3 pr-4 text-base font-medium text-indigo-700 border-l-4 border-indigo-500 bg-indigo-50"
+              >
+                Home
+              </Disclosure.Button>
+              <Disclosure.Button
+                as="a"
+                href="#"
+                className="block py-2 pl-3 pr-4 text-base font-medium text-gray-500 border-l-4 border-transparent hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+              >
+                Transactions
+              </Disclosure.Button>
+              <Disclosure.Button
+                as="a"
+                href="#"
+                className="block py-2 pl-3 pr-4 text-base font-medium text-gray-500 border-l-4 border-transparent hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+              >
+                Services
+              </Disclosure.Button>
             </div>
-
-
-        </nav>
-    );
+          </Disclosure.Panel>
+        </>
+      )}
+    </Disclosure>
+  )
 }
+
 
 export default Navbar;

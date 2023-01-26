@@ -1,11 +1,10 @@
 import React, {useContext } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
-// import { AiFillPlayCircle } from 'react-icons/ai';
 import { SiEthereum } from 'react-icons/si';
 import { BsInfoCircle } from 'react-icons/bs';
 import { shortenAddress } from '../utils/shortenAddress';
 
-import { Loader } from './';
+import { Loader } from '.';
 
 const commonStyles = 'min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-grey-400 text-sm font-light text-white';
 
@@ -21,7 +20,7 @@ const Input = ({ placeholder, name, type, handleChange, value }) => (
       />
 )
 
-const Welcome = () => {
+const Home = () => {
     const { connectWallet, connectedAccount, formData, handleChange, sendTransaction, transactionsCount, isLoading } = useContext(TransactionContext);
     console.log("connectedAccount from context => ", connectedAccount); 
     // const connectWallet = () => {
@@ -38,7 +37,7 @@ const Welcome = () => {
     }
 
     return (
-        <div className='flex items-center justify-center w-full'>
+        <div className='flex items-center justify-center w-full gradient-bg-home'>
             <div className='flex flex-col items-start justify-between px-4 py-12 md:flex-row md:p-20'>
                 <div className='flex flex-col justify-start flex-1 md:mr-10'>
                     <h1 className='py-1 text-3xl sm:text-5xl text-red text-gradient'>
@@ -110,4 +109,4 @@ const Welcome = () => {
     );
 }
 
-export default Welcome;
+export default Home;
