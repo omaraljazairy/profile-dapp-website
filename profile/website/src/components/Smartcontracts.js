@@ -52,7 +52,7 @@ const Smartcontracts = () => {
                         onClick={connectWallet}
                         className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-green"
                         >
-                        <p className='text-base font-semibold text-blue-600'>Connect Wallet</p>
+                        <p className='text-base font-semibold text-white'>Connect Wallet</p>
                         </button>
                     }
 
@@ -100,7 +100,7 @@ const Smartcontracts = () => {
                             </button>
                         )}
                         <div>
-                            <h2 className="font-bold text-black">Total Transactions: {transactionsCount ? transactionsCount : 0}</h2>
+                            <h2 className="font-bold text-blue-600">Total Transactions: {transactionsCount ? transactionsCount : 0}</h2>
                         </div>
                     </div>
                 </div>

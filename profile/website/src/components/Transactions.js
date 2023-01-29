@@ -7,7 +7,7 @@ import useFetch from '../hooks/useFetch';
 const TransactionCard = ( {addressTo, addressFrom, timestamp, message, keyword, amount, url} ) => {
     const gifUrl = useFetch({ keyword });
     return (
-        <div className="bg-[#181918] m-4 flex flex-1 
+        <div className="bg-[#2952e3] m-4 flex flex-1 
             2xl:min-w-[450px]
             2xl:mix-w-[500px]
             sm:min-w-[270px]
@@ -50,11 +50,11 @@ const Transactions = () => {
         <div className="flex items-center justify-center w-full 2xl:px-20 gradient-bg-transactions">
             <div className="flex flex-col px-4 py-12 md:p-12">
                 {connectedAccount ? (
-                    <h3 className="my-2 text-3xl text-center text-white">
+                    <h3 className="my-2 text-3xl text-center text-blue-600">
                         Latest Transactions.
                     </h3>
                 ) : (
-                    <h3 className="my-2 text-3xl text-center text-white">
+                    <h3 className="my-2 text-3xl text-center text-blue-600">
                         Connect your account to see the transactions.
                     </h3>
                 )}
