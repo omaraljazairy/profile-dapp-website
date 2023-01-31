@@ -35,7 +35,7 @@ export const TransactionProvider = ({ children }) => {
 
     const getAllTransactionsFromContract = async () => {
         try {
-            if(!ethereum) return alert("Please install Metamask into your browser");
+            if(!ethereum) return console.log("Please install Metamask into your browser");
             const contractInstance = getEthereumContract();
             const availableTransactions = await contractInstance.getAllTransactions();
             console.log("availableTrasactions => ", availableTransactions);
@@ -58,7 +58,7 @@ export const TransactionProvider = ({ children }) => {
 
     const isWalletConnected = async () => {
         try {
-            if(!ethereum) return alert("Pleas install metamask");
+            if(!ethereum) return console.log("Pleas install metamask");
 
             const accounts = await ethereum.request({ method: 'eth_accounts' });
     

@@ -5,15 +5,9 @@ import { NavLink } from 'react-router-dom';
 
 const activeClass = "inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-indigo-500";
 const inActiveClass = "inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700";
-
+    
 const Navbar = () => {
-  const [activeBtn, setActiveBtn] = useState(0);
-
-  const handleActiveBtn = (btnNr) => {
-      console.log("btnNr received => ", btnNr);
-      setActiveBtn(btnNr);
-  }
-  console.log("activeBtn => ", activeBtn);
+  const activeClass = {fontWeight: "bold"}
 
   return (
     <Disclosure as="nav" className="bg-white shadow">
@@ -35,14 +29,11 @@ const Navbar = () => {
               <div className="flex items-center justify-center flex-1 sm:items-stretch sm:justify-center">
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                   {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                  <div className={activeBtn === 0 ? activeClass : inActiveClass}>
-                    <NavLink to='home' onClick={() => handleActiveBtn(0)}>Home</NavLink>
+                  <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700">
+                    <NavLink to='/home' activeStyle={activeClass}>Home</NavLink>
                   </div>
-                  <div className={activeBtn === 1 ? activeClass : inActiveClass}>
-                    <NavLink to='transactions' onClick={() => handleActiveBtn(1)}>Transactions</NavLink>
-                  </div>
-                  <div className={activeBtn === 2 ? activeClass : inActiveClass}>
-                    <NavLink to='services' onClick={() => handleActiveBtn(2)}>Services</NavLink>
+                  <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700">
+                    <NavLink to='/skills' activeStyle={activeClass}>Skills</NavLink>
                   </div>
                 </div>
               </div>
@@ -58,13 +49,6 @@ const Navbar = () => {
                 className="block py-2 pl-3 pr-4 text-base font-medium text-indigo-700 border-l-4 border-indigo-500 bg-indigo-50"
               >
                 Home
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="#"
-                className="block py-2 pl-3 pr-4 text-base font-medium text-gray-500 border-l-4 border-transparent hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
-              >
-                Transactions
               </Disclosure.Button>
               <Disclosure.Button
                 as="a"
