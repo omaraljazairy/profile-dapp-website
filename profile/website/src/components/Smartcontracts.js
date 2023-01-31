@@ -41,10 +41,10 @@ const Smartcontracts = () => {
             <div className='flex flex-col items-start justify-between px-4 py-12 md:flex-row md:p-20'>
                 <div className='flex flex-col justify-start flex-1 md:mr-10'>
                     <h1 className='py-1 text-3xl text-blue-600 sm:text-5xl text-red'>
-                        SamrtContracts 
+                        Smart Contracts 
                     </h1>
                     <p className='w-11/12 mt-5 text-base font-bold text-left text-blue-600 md:w-9/12'>
-                        Transfer Ether with Smartcontracts.
+                        Transfer Ether with custom Smart contracts.
                     </p>
                     {!connectedAccount &&
                         <button
@@ -58,7 +58,7 @@ const Smartcontracts = () => {
 
                     <div className='grid grid-cols-2 mt-10 sm:grid-cols-3'>
                         <div className={`rounded-tl-2xl ${commonStyles}`}>Blockchain</div>
-                        <div className={commonStyles}>SmartContract</div>
+                        <div className={commonStyles}>Smart Contract</div>
                         <div className={`rounded-tr-2xl ${commonStyles}`}>Ethereum</div>
                         <div className={`rounded-bl-2xl ${commonStyles}`}>Metamask</div>
                         <div className={commonStyles}>Solidity</div>

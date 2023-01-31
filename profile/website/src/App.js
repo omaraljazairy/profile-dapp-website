@@ -1,6 +1,6 @@
 import { Route, Router, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import { Navbar, Home, Services, Transactions } from "./components";
+import { Navbar, Home, Skills, Transactions } from "./components";
 
 export const history = createBrowserHistory()
 
@@ -13,7 +13,7 @@ const App = () => {
           <Switch>
             <Route path='/home' component={Home} />
             <Route exact path='/transactions' component={Transactions} />
-            <Route exact path='/services' component={Services} />
+            <Route exact path='/skills' component={Skills} />
             <Route path="*" component={Home} />
           </Switch>
         </Router>
