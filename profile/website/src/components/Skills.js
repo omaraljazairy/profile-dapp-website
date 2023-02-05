@@ -1,6 +1,8 @@
 import { SiSolidity } from "react-icons/si";
 import { SiReact } from "react-icons/si";
 import { SiPython } from "react-icons/si";
+import { SiDocker } from "react-icons/si";
+import { SiAmazonaws } from "react-icons/si";
 
 
 const ServiceCard = ( { color, title, icon, subtitle } ) => (
@@ -36,7 +38,19 @@ const Services = () => {
                     title="ReactJS / ReactNative"
                     icon={<SiReact fontSize={21} className="text-white" />}
                     subtitle="Website and mobile App for Backend APIs and Smart Contracts on Ethereum."
-                />                                
+                />
+                <ServiceCard 
+                    color="bg-[#8945F8]"
+                    title="AWS Cloud"
+                    icon={<SiAmazonaws fontSize={21} className="text-white" />}
+                    subtitle="Host websites, API, use Lambda & RDS AWS Cloud Services + monitoring tools "
+                />
+                <ServiceCard 
+                    color="bg-[#8945F8]"
+                    title="Dockers"
+                    icon={<SiDocker fontSize={21} className="text-white" />}
+                    subtitle="Containerized all services, deploy and run them on any environment and OS."
+                />
             </div>
         </div>
     );
