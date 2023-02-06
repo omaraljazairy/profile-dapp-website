@@ -51,7 +51,7 @@ const Transactions = () => {
             <div className="flex flex-col px-4 py-12 md:p-12">
                 {connectedAccount ? (
                     <h3 className="my-2 text-3xl text-center text-blue-600">
-                        Latest Transactions.
+                        Latest Transactions from the contract.
                     </h3>
                 ) : (
                     <h3 className="my-2 text-3xl text-center text-blue-600">

@@ -46,7 +46,14 @@ const Smartcontracts = () => {
                     <p className='w-11/12 mt-5 text-base font-bold text-left text-blue-600 md:w-9/12'>
                         Transfer Ether with custom Smart contracts.
                     </p>
+                    <p className='w-11/12 mt-5 text-base text-left text-blue-600 md:w-9/12'>
+                        This sample smart contract is deployed on the Goerli provider's network.
+                    </p>
                     {!connectedAccount &&
+                        <>
+                        <p className='w-11/12 mt-5 text-base text-left text-blue-600 md:w-9/12'>
+                            To use it, install the metamask wallet and create an account on the Goerli test network.
+                        </p>
                         <button
                         type="button"
                         onClick={connectWallet}
@@ -54,6 +61,7 @@ const Smartcontracts = () => {
                         >
                         <p className='text-base font-semibold text-white'>Connect Wallet</p>
                         </button>
+                        </>
                     }
 
                     <div className='grid grid-cols-2 mt-10 sm:grid-cols-3'>
