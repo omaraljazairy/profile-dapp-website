@@ -93,7 +93,7 @@ const Smartcontracts = () => {
                     <div className='flex flex-col items-center justify-start w-full p-5 sm:w-96 blue-glassmorphism'>
                         <Input placeholder="Address" name="addressTo" type="text" handleChange={handleChange} />
                         <Input placeholder="Amount (ETH)" name="amount" type="number" handleChange={handleChange} />
-                        <Input placeholder="Keyword (Gif)" name="keyword" type="text" handleChange={handleChange} />
+                        <Input placeholder="Keyword for a Gif" name="keyword" type="text" handleChange={handleChange} />
                         <Input placeholder="Enter Message" name="message" type="text" handleChange={handleChange} />
                         <div className='h-[1px] w-full bg-blue-400 my-2' />
                         {isLoading ? (
