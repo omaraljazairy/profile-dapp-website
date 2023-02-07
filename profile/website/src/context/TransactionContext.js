@@ -7,10 +7,10 @@ export const TransactionContext = React.createContext();
 
 console.log("contractAddress => ", contractAddress);
 const { ethereum } = window;
-
+let provider; // init it here because i need to use it in other unctions
 
 const getEthereumContract = () => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
+    provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
     const transactionContract = new ethers.Contract(contractAddress, contractABI, signer);
 
@@ -29,10 +29,24 @@ export const TransactionProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [transactionsCount, setTransactionsCount] = useState(localStorage.getItem('transactionCount'));
     const [transactions, setTransactions] = useState([]);
+    const [network, setNetwork] = useState('');
+    const [balance, setBalance] = useState(0);
 
     const handleChange = (event, name) => {
         console.log("event => ", event, " name => ", name);
         setFormData((prevState) => ({ ...prevState, [name]: event}));
+    }
+
+    const getAccountInfo = async (account) => {
+        // get the network name from the provider and set it.
+        let network = await provider.getNetwork();
+        console.log("network => ", network.name);
+        setNetwork(network.name);
+        const balance = await provider.getBalance(account);
+        // convert a currency unit from wei to ether
+        const balanceInEth = ethers.utils.formatEther(balance);
+        console.log(`balance: ${balanceInEth} ETH`);
+        setBalance(balanceInEth);
     }
 
     const getAllTransactionsFromContract = async () => {
@@ -67,6 +81,7 @@ export const TransactionProvider = ({ children }) => {
             if(accounts.length) {
                 setConnectedAccount(accounts[0]);
                 getAllTransactionsFromContract();
+                getAccountInfo(accounts[0]);
             }
             console.log("accounts => ", accounts);
         } catch (error) {
@@ -130,6 +145,7 @@ export const TransactionProvider = ({ children }) => {
             updateTranactionsCount();
             getAllTransactionsFromContract();
             setIsLoading(false);
+            getAccountInfo(connectedAccount);
             console.log(`Finished - ${transactionHash.hash}`);
 
         } catch(error) {
@@ -152,7 +168,9 @@ export const TransactionProvider = ({ children }) => {
                 sendTransaction, 
                 transactionsCount, 
                 isLoading,
-                transactions
+                transactions,
+                balance,
+                network
             }
         }>
             {children}
