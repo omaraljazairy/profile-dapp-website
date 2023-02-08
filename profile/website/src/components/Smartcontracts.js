@@ -1,8 +1,8 @@
 import React, {useContext } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
 import { SiEthereum } from 'react-icons/si';
-import { BsInfoCircle } from 'react-icons/bs';
 import { shortenAddress } from '../utils/shortenAddress';
+import { shortenBalance } from '../utils/converters';
 
 import { Loader } from '.';
 
@@ -21,11 +21,8 @@ const Input = ({ placeholder, name, type, handleChange, value }) => (
 )
 
 const Smartcontracts = () => {
-    const { connectWallet, connectedAccount, formData, handleChange, sendTransaction, transactionsCount, isLoading } = useContext(TransactionContext);
-    console.log("connectedAccount from context => ", connectedAccount); 
-    // const connectWallet = () => {
-    //     console.log("Connect to Wallet");
-    // }
+    const { connectWallet, connectedAccount, formData, handleChange, sendTransaction, transactionsCount, isLoading, balance, network } = useContext(TransactionContext);
+    console.log("connectedAccount from context => ", connectedAccount);
 
     const handleSubmit = (e) => {
         const { addressTo, amount, keyword, message} = formData;
@@ -80,13 +77,16 @@ const Smartcontracts = () => {
                                 <div className='flex items-center justify-center w-10 h-10 border-2 border-white rounded-full'>
                                     <SiEthereum fontSize={21} color="#fff" />
                                 </div>
-                                <BsInfoCircle fontSize={17} color="#fff"/>
+                                <div className='text-sm font-semibold text-white'>{shortenBalance(balance)} ETH</div>
                             </div>
                             <div>
-                                <p className='text-sm font-light text-white'>{connectedAccount ?
+                                <p className='text-sm font-semibold text-white'>{connectedAccount ?
                                     shortenAddress(connectedAccount) : 
                                     "No account available"}</p>
-                                <p className='mt-1 text-lg font-semibold text-white'>Ethereum</p>
+                                <p className='mt-1 text-lg font-semibold text-white'>{connectedAccount ?
+                                    network : 
+                                    "Ethereum"}
+                                    </p>
                             </div>
                         </div>
                     </div>
