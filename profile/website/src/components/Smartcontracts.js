@@ -77,10 +77,10 @@ const Smartcontracts = () => {
                                 <div className='flex items-center justify-center w-10 h-10 border-2 border-white rounded-full'>
                                     <SiEthereum fontSize={21} color="#fff" />
                                 </div>
-                                <div className='text-sm font-light text-white'>Balance: {shortenBalance(balance)} ETH</div>
+                                <div className='text-sm font-semibold text-white'>{shortenBalance(balance)} ETH</div>
                             </div>
                             <div>
-                                <p className='text-sm font-light text-white'>{connectedAccount ?
+                                <p className='text-sm font-semibold text-white'>{connectedAccount ?
                                     shortenAddress(connectedAccount) : 
                                     "No account available"}</p>
                                 <p className='mt-1 text-lg font-semibold text-white'>{connectedAccount ?

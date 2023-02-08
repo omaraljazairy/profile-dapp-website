@@ -9,6 +9,11 @@ console.log("contractAddress => ", contractAddress);
 const { ethereum } = window;
 let provider; // init it here because i need to use it in other unctions
 
+// ethereum.on('accountsChanged', function (accounts) {
+//     // Time to reload your interface with accounts[0]!
+//     console.log("account changed => ", accounts);
+//   });
+
 const getEthereumContract = () => {
     provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
@@ -39,6 +44,7 @@ export const TransactionProvider = ({ children }) => {
 
     const getAccountInfo = async (account) => {
         // get the network name from the provider and set it.
+        getEthereumContract();
         let network = await provider.getNetwork();
         console.log("network => ", network.name);
         setNetwork(network.name);
@@ -96,6 +102,7 @@ export const TransactionProvider = ({ children }) => {
             
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
             setConnectedAccount(accounts[0]);
+            getAccountInfo(accounts[0]);
         } catch (error) {
             console.log(error);
             throw new Error("No ethereum object");
@@ -156,6 +163,13 @@ export const TransactionProvider = ({ children }) => {
 
     useEffect(() => {
         isWalletConnected();
+        ethereum.on('accountsChanged', function (accounts) {
+            // Time to reload your interface with accounts[0]!
+            setConnectedAccount(accounts[0]);
+            getAccountInfo(accounts[0]);
+            console.log("account changed => ", accounts);
+          });
+        
     }, []);
 
     return (
