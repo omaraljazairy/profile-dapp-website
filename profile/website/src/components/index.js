@@ -5,3 +5,4 @@ export { default as Skills } from './Skills';
 export { default as Transactions } from './Transactions';
 export { default as Home } from './Home';
 export { default as Smartcontracts} from './Smartcontracts';
+export { default as Table } from './Table';
