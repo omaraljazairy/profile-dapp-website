@@ -5,14 +5,8 @@ import { contractABI, contractAddress } from '../utils/constants';
 
 export const TransactionContext = React.createContext();
 
-console.log("contractAddress => ", contractAddress);
 const { ethereum } = window;
 let provider; // init it here because i need to use it in other unctions
-
-// ethereum.on('accountsChanged', function (accounts) {
-//     // Time to reload your interface with accounts[0]!
-//     console.log("account changed => ", accounts);
-//   });
 
 const getEthereumContract = () => {
     provider = new ethers.providers.Web3Provider(ethereum);
@@ -30,7 +24,7 @@ const getEthereumContract = () => {
 
 export const TransactionProvider = ({ children }) => {
     const [connectedAccount, setConnectedAccount] = useState('');
-    const [formData, setFormData] = useState({ addressTo: '', amount: '', keyword: '', message: ''});
+    const [formData, setFormData] = useState({ addressTo: '', amount: '', message: ''});
     const [isLoading, setIsLoading] = useState(false);
     const [transactionsCount, setTransactionsCount] = useState(localStorage.getItem('transactionCount'));
     const [transactions, setTransactions] = useState([]);
@@ -38,7 +32,6 @@ export const TransactionProvider = ({ children }) => {
     const [balance, setBalance] = useState(0);
 
     const handleChange = (event, name) => {
-        console.log("event => ", event, " name => ", name);
         setFormData((prevState) => ({ ...prevState, [name]: event}));
     }
 
@@ -46,33 +39,28 @@ export const TransactionProvider = ({ children }) => {
         // get the network name from the provider and set it.
         getEthereumContract();
         let network = await provider.getNetwork();
-        console.log("network => ", network.name);
         setNetwork(network.name);
         const balance = await provider.getBalance(account);
         // convert a currency unit from wei to ether
         const balanceInEth = ethers.utils.formatEther(balance);
-        console.log(`balance: ${balanceInEth} ETH`);
         setBalance(balanceInEth);
     }
 
     const getAllTransactionsFromContract = async () => {
         try {
-            if(!ethereum) return console.log("Please install Metamask into your browser");
+            if(!ethereum) return alert("Please install Metamask into your browser");
             const contractInstance = getEthereumContract();
             const availableTransactions = await contractInstance.getAllTransactions();
-            console.log("availableTrasactions => ", availableTransactions);
             const structeredTransactions = availableTransactions.map((transaction) => (
                 {
                     addressTo: transaction.receiver,
                     addressFrom: transaction.from,
                     timestamp: new Date(transaction.timestamp.toNumber() * 1000).toLocaleString(),
                     message: transaction.message,
-                    keyword: transaction.keyword,
                     amount: parseInt(transaction.amount._hex) / (10 ** 18)
                 }
             ));
             setTransactions(structeredTransactions);
-            console.log("structeredTransactions => ", structeredTransactions);
         }catch(error){
             console.error(error.message);
         }
@@ -80,7 +68,7 @@ export const TransactionProvider = ({ children }) => {
 
     const isWalletConnected = async () => {
         try {
-            if(!ethereum) return console.log("Pleas install metamask");
+            if(!ethereum) return alert("Pleas install metamask");
 
             const accounts = await ethereum.request({ method: 'eth_accounts' });
     
@@ -89,7 +77,6 @@ export const TransactionProvider = ({ children }) => {
                 getAllTransactionsFromContract();
                 getAccountInfo(accounts[0]);
             }
-            console.log("accounts => ", accounts);
         } catch (error) {
             console.log(error);
             throw new Error("No ethereum object");
@@ -114,10 +101,8 @@ export const TransactionProvider = ({ children }) => {
         try {
             const count = await contractInstance.getTransactionCount();
             // set the transactions count and store them in the local storage
-            console.log("count => ", count.toNumber());
             setTransactionsCount(count.toNumber());
-            window.localStorage.setItem("transactionCount", count);            
-            console.log("transactionsCount => ", transactionsCount);
+            window.localStorage.setItem("transactionCount", count);  
             
         }catch(error){
             console.error(error.message);
@@ -127,7 +112,7 @@ export const TransactionProvider = ({ children }) => {
     const sendTransaction = async () => {
         try {
             if(!ethereum) return alert("Pleas install metamask");
-            const { addressTo, amount, keyword, message} = formData;
+            const { addressTo, amount, message} = formData;
             const parsedValue = ethers.utils.parseEther(amount); // convert to GWEI
             const transaction = getEthereumContract();
             await ethereum.request(
@@ -146,7 +131,7 @@ export const TransactionProvider = ({ children }) => {
 
             setIsLoading(true);
             // add to blockchain
-            const transactionHash = await transaction.addToBlockchain(addressTo, parsedValue, message, keyword);
+            const transactionHash = await transaction.addToBlockchain(addressTo, parsedValue, message);
             console.log(`Loading - ${transactionHash.hash}`);
             await transactionHash.wait();
             updateTranactionsCount();
@@ -168,7 +153,6 @@ export const TransactionProvider = ({ children }) => {
                 // Time to reload your interface with accounts[0]!
                 setConnectedAccount(accounts[0]);
                 getAccountInfo(accounts[0]);
-                console.log("account changed => ", accounts);
               });
         }
         
