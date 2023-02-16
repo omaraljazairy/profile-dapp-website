@@ -163,12 +163,14 @@ export const TransactionProvider = ({ children }) => {
 
     useEffect(() => {
         isWalletConnected();
-        ethereum.on('accountsChanged', function (accounts) {
-            // Time to reload your interface with accounts[0]!
-            setConnectedAccount(accounts[0]);
-            getAccountInfo(accounts[0]);
-            console.log("account changed => ", accounts);
-          });
+        if(ethereum) {
+            ethereum.on('accountsChanged', function (accounts) {
+                // Time to reload your interface with accounts[0]!
+                setConnectedAccount(accounts[0]);
+                getAccountInfo(accounts[0]);
+                console.log("account changed => ", accounts);
+              });
+        }
         
     }, []);
 

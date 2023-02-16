@@ -9,8 +9,7 @@ contract Transactions {
         address receiver, 
         uint amount, 
         string message, 
-        uint256 timestamp, 
-        string keyword
+        uint256 timestamp
     );
 
     struct TransferStruct {
@@ -19,7 +18,6 @@ contract Transactions {
         uint amount; 
         string message; 
         uint256 timestamp; 
-        string keyword;
     }
 
     TransferStruct[] transactions;
@@ -27,8 +25,7 @@ contract Transactions {
     function addToBlockchain(
         address payable receiver,
         uint amount,
-        string memory message,
-        string memory keyword) public {
+        string memory message) public {
 
         transactionCount +=1;
         transactions.push(
@@ -37,12 +34,11 @@ contract Transactions {
                 receiver,
                 amount,
                 message,
-                block.timestamp,
-                keyword
+                block.timestamp
             )
         );
 
-        emit Transfer(msg.sender, receiver, amount, message, block.timestamp, keyword);
+        emit Transfer(msg.sender, receiver, amount, message, block.timestamp);
     }
 
     function getAllTransactions() public view returns (TransferStruct[] memory) {
@@ -52,6 +48,4 @@ contract Transactions {
     function getTransactionCount() public view returns(uint256) {
         return transactionCount;
     }
-
-
 }
