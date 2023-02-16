@@ -6,3 +6,5 @@ export { default as Transactions } from './Transactions';
 export { default as Home } from './Home';
 export { default as Smartcontracts} from './Smartcontracts';
 export { default as Table } from './Table';
+export { default as MyTest } from './MyTest';
+export { default as Test } from './Test';
