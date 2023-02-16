@@ -24,13 +24,15 @@ const Navbar = () => {
               </div>
               <div className="flex items-center justify-center flex-1 sm:items-stretch sm:justify-center">
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700">
                     <NavLink to='/home' activeStyle={activeClass}>Home</NavLink>
                   </div>
                   <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700">
                     <NavLink to='/skills' activeStyle={activeClass}>Skills</NavLink>
                   </div>
+                  {/* <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700">
+                    <NavLink to='/test' activeStyle={activeClass}>Test</NavLink>
+                  </div>                                     */}
                 </div>
               </div>
             </div>
@@ -38,20 +40,19 @@ const Navbar = () => {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="pt-2 pb-4 space-y-1">
-              {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
               <Disclosure.Button
                 as="a"
-                href="#"
+                href="/home"
                 className="block py-2 pl-3 pr-4 text-base font-medium text-indigo-700 border-l-4 border-indigo-500 bg-indigo-50"
               >
                 Home
               </Disclosure.Button>
               <Disclosure.Button
                 as="a"
-                href="#"
+                href="/skills"
                 className="block py-2 pl-3 pr-4 text-base font-medium text-gray-500 border-l-4 border-transparent hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
               >
-                Services
+                Skills
               </Disclosure.Button>
             </div>
           </Disclosure.Panel>
