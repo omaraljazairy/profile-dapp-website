@@ -2,8 +2,13 @@ import MaterialReactTable from 'material-react-table';
 import React, { useMemo } from 'react';
 
 const Table = ({ transactions }) => {
+  // console.log("all transactions received => ", transactions);
   const columns = useMemo(
     () => [
+      {
+        header: 'Transaction',
+        accessorKey: 'transactionHash',
+      },
       {
         header: 'From',
         accessorKey: 'addressFrom',

@@ -38,9 +38,10 @@ const {
           const receiver = '0xd0Cd56930940855180037C25f819c478a6aAfBbf'
           const amount = 00002
           const message = 'testing message'
+          const transactionHash = '0x78b25eee314193ac5b61ec0737ffff1498f399fef07eb3873492cebedb6a3391'
           console.log("owner => ", owner.address);
-          const transfer = await transaction.addToBlockchain(receiver, amount, message);
-          console.log("transfer => ", transfer);
+          const transactionBlock = await transaction.addToBlockchain(receiver, amount, message, transactionHash);
+          console.log("transfer transactionBlock=> ", transactionBlock);
           const count = await transaction.getTransactionCount();
           console.log("transactionCount => ", count.toNumber());
           expect(count.toNumber() == 1);
@@ -52,10 +53,11 @@ const {
           const receiver = '0xd0Cd56930940855180037C25f819c478a6aAfBbf'
           const amount = 00002
           const message = 'testing message'
+          const transactionHash = '0x78b25eee314193ac5b61ec0737ffff1498f399fef07eb3873492cebedb6a3391'
           console.log("owner => ", owner.address);
-          const transfer1 = await transaction.addToBlockchain(receiver, amount, message);
-          const transfer2 = await transaction.addToBlockchain(receiver, amount, message);
-          const transfer3 = await transaction.addToBlockchain(receiver, amount, message);
+          const transfer1 = await transaction.addToBlockchain(receiver, amount, message, transactionHash);
+          const transfer2 = await transaction.addToBlockchain(receiver, amount, message, transactionHash);
+          const transfer3 = await transaction.addToBlockchain(receiver, amount, message, transactionHash);
         //   console.log("transfer => ", transfer);
           const count = await transaction.getTransactionCount();
           console.log("transactionCount => ", count.toNumber());
@@ -68,9 +70,10 @@ const {
           const receiver = '0xd0Cd56930940855180037C25f819c478a6aAfBbf'
           const amount = 00002
           const message = 'testing message'
+          const transactionHash = '0x78b25eee314193ac5b61ec0737ffff1498f399fef07eb3873492cebedb6a3391'
           console.log("owner => ", owner.address);
-          const transfer1 = await transaction.addToBlockchain(receiver, amount, message);
-          const transfer2 = await transaction.addToBlockchain(receiver, amount, message);
+          const transfer1 = await transaction.addToBlockchain(receiver, amount, message, transactionHash);
+          const transfer2 = await transaction.addToBlockchain(receiver, amount, message, transactionHash);
           const count = await transaction.getTransactionCount();
           const allTransactions = await transaction.getAllTransactions();
           console.log("transactionCount => ", count.toNumber());

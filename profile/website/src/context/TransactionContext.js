@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { shortenAddress } from '../utils/shortenAddress';
 import { ethers } from 'ethers';
 
 import { contractABI, contractAddress } from '../utils/constants';
@@ -13,11 +14,11 @@ const getEthereumContract = () => {
     const signer = provider.getSigner();
     const transactionContract = new ethers.Contract(contractAddress, contractABI, signer);
 
-     console.log({
-        provider,
-        signer,
-        transactionContract
-     });
+    //  console.log({
+    //     provider,
+    //     signer,
+    //     transactionContract
+    //  });
 
      return transactionContract;
 }
@@ -53,6 +54,7 @@ export const TransactionProvider = ({ children }) => {
             const availableTransactions = await contractInstance.getAllTransactions();
             const structeredTransactions = availableTransactions.map((transaction) => (
                 {
+                    transactionHash: shortenAddress(transaction.transactionHash),
                     addressTo: transaction.receiver,
                     addressFrom: transaction.from,
                     timestamp: new Date(transaction.timestamp.toNumber() * 1000).toLocaleString(),
@@ -115,7 +117,7 @@ export const TransactionProvider = ({ children }) => {
             const { addressTo, amount, message} = formData;
             const parsedValue = ethers.utils.parseEther(amount); // convert to GWEI
             const transaction = getEthereumContract();
-            await ethereum.request(
+            const transactionHash = await ethereum.request(
                 {
                     method: 'eth_sendTransaction',
                     params: [
@@ -130,18 +132,21 @@ export const TransactionProvider = ({ children }) => {
             )
 
             setIsLoading(true);
+            // console.log("transactionHash of sendTransaction => ", transactionHash);
             // add to blockchain
-            const transactionHash = await transaction.addToBlockchain(addressTo, parsedValue, message);
-            console.log(`Loading - ${transactionHash.hash}`);
-            await transactionHash.wait();
+            const transactionBlock = await transaction.addToBlockchain(addressTo, parsedValue, message, transactionHash);
+            // console.log(`Loading - ${transactionBlock.hash}`);
+            await transactionBlock.wait();
             updateTranactionsCount();
             getAllTransactionsFromContract();
             setIsLoading(false);
             getAccountInfo(connectedAccount);
-            console.log(`Finished - ${transactionHash.hash}`);
+            // console.log(`Finished - ${transactionBlock.hash}`);
 
         } catch(error) {
             console.error(error);
+            setIsLoading(false);
+            alert(error.message);
         }
     }
 

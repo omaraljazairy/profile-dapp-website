@@ -22,7 +22,7 @@ const Input = ({ placeholder, name, type, handleChange, value }) => (
 
 const Smartcontracts = () => {
     const { connectWallet, connectedAccount, formData, handleChange, sendTransaction, transactionsCount, isLoading, balance, network } = useContext(TransactionContext);
-    console.log("connectedAccount from context => ", connectedAccount);
+    // console.log("connectedAccount from context => ", connectedAccount);
 
     const handleSubmit = (e) => {
         const { addressTo, amount, message} = formData;
