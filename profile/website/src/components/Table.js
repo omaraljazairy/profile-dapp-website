@@ -1,13 +1,18 @@
 import MaterialReactTable from 'material-react-table';
 import React, { useMemo } from 'react';
+import { shortenAddress } from '../utils/shortenAddress';
 
 const Table = ({ transactions }) => {
   // console.log("all transactions received => ", transactions);
   const columns = useMemo(
     () => [
       {
+        accessorKey: 'link',
         header: 'Transaction',
         accessorKey: 'transactionHash',
+        Cell: ({ cell, row }) => (
+          <a href={"https://goerli.etherscan.io/tx/" + cell.getValue()} target="_blank">{shortenAddress(cell.getValue())}</a>
+        ),
       },
       {
         header: 'From',

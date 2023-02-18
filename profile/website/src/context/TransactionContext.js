@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { shortenAddress } from '../utils/shortenAddress';
 import { ethers } from 'ethers';
 
 import { contractABI, contractAddress } from '../utils/constants';
@@ -54,7 +53,7 @@ export const TransactionProvider = ({ children }) => {
             const availableTransactions = await contractInstance.getAllTransactions();
             const structeredTransactions = availableTransactions.map((transaction) => (
                 {
-                    transactionHash: shortenAddress(transaction.transactionHash),
+                    transactionHash: transaction.transactionHash,
                     addressTo: transaction.receiver,
                     addressFrom: transaction.from,
                     timestamp: new Date(transaction.timestamp.toNumber() * 1000).toLocaleString(),
