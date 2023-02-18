@@ -76,6 +76,7 @@ export const TransactionProvider = ({ children }) => {
             if(accounts.length) {
                 setConnectedAccount(accounts[0]);
                 getAllTransactionsFromContract();
+                updateTranactionsCount();
                 getAccountInfo(accounts[0]);
             }
         } catch (error) {
