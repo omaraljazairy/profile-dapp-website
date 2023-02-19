@@ -17,3 +17,4 @@ package-lock.json
 website/src/components/MyTest.js
 website/src/components/Test.js
 website/node_modules
+profile/website/package-lock.json

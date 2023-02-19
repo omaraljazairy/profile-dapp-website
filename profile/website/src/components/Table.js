@@ -7,11 +7,10 @@ const Table = ({ transactions }) => {
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'link',
-        header: 'Transaction',
         accessorKey: 'transactionHash',
+        header: 'Transaction',
         Cell: ({ cell, row }) => (
-          <a href={"https://goerli.etherscan.io/tx/" + cell.getValue()} target="_blank">{shortenAddress(cell.getValue())}</a>
+          <a href={"https://goerli.etherscan.io/tx/" + cell.getValue()} target="_blank" rel="noreferrer">{shortenAddress(cell.getValue())}</a>
         ),
       },
       {
