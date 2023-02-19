@@ -1,5 +1,6 @@
 import React, {useContext } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
+import { DeviceTypeContext } from '../context/DeviceTypeContext';
 import { SiEthereum } from 'react-icons/si';
 import { shortenAddress } from '../utils/shortenAddress';
 import { shortenBalance } from '../utils/converters';
@@ -22,7 +23,8 @@ const Input = ({ placeholder, name, type, handleChange, value }) => (
 
 const Smartcontracts = () => {
     const { connectWallet, connectedAccount, formData, handleChange, sendTransaction, transactionsCount, isLoading, balance, network } = useContext(TransactionContext);
-    // console.log("connectedAccount from context => ", connectedAccount);
+    const { deviceType } = useContext(DeviceTypeContext);
+    console.log("deviceType => ", deviceType);
 
     const handleSubmit = (e) => {
         const { addressTo, amount, message} = formData;
@@ -31,6 +33,25 @@ const Smartcontracts = () => {
         if(!addressTo || !amount || !message) return;
 
         sendTransaction();
+    }
+
+    const deviceTypeUseInfo = (deviceType) => {
+        if(deviceType !== 'DESKTOP') {
+            return (
+                <p className='w-11/12 mt-5 text-base text-left text-blue-600 md:w-9/12'>
+                    To use it, first install the metamask wallet from the <b><a href="https://apps.apple.com/nl/app/metamask-blockchain-wallet/id1438144202?l=en"> AppStore </a></b> or PlayStore and create an account on the Goerli test network (if not installed).
+                    Open the metamask app and go to the Browser option. Put this page url it the URL field. This will connect
+                    your account to the smart contract.
+                </p>
+            )
+        }else{
+            return (
+                <p className='w-11/12 mt-5 text-base text-left text-blue-600 md:w-9/12'>
+                    To use it, install the metamask wallet and create an account on the Goerli test network.
+                    Press the Connect Wallet buton below to connect you account.
+                </p>
+            )
+        }
     }
 
     return (
@@ -48,9 +69,7 @@ const Smartcontracts = () => {
                     </p>
                     {!connectedAccount &&
                         <>
-                        <p className='w-11/12 mt-5 text-base text-left text-blue-600 md:w-9/12'>
-                            To use it, install the metamask wallet and create an account on the Goerli test network.
-                        </p>
+                        {deviceTypeUseInfo(deviceType)}
                         <button
                         type="button"
                         onClick={connectWallet}
