@@ -1,0 +1,14 @@
+{
+    "attributes" : [
+        {
+            "trait_type" : "Male",
+            "value" : "Tucker"
+        }, {
+            "trait_type" : "Female",
+            "value" : "Stella"
+        }
+    ],
+    "description" : "Tucker and Stella sleeping",
+    "image" : "https://gateway.pinata.cloud/ipfs/QmetGDE9PX9UuB9BbNaJ8EnJ3cztPNuZbkm1i7qo9QsDdh",
+    "name" : "TuckerAndStella1"
+}
