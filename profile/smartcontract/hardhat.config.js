@@ -7,7 +7,7 @@ module.exports = {
   networks: {
     goerli: {
       url: process.env.URL,
-      accounts: [process.env.ACCOUNT]
+      accounts: [process.env.ACCOUNT],
     },
     nft_goerli: {
       url: process.env.ALCHEMY_NFT_URL,
