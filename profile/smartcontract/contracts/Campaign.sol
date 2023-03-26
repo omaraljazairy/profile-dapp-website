@@ -12,6 +12,11 @@ contract CampaignFactory {
     function getDeployedCampaigns() public view returns (Campaign[] memory) {
         return deployedCampaigns;
     }
+
+    function getContractBalance(address contractAddress) public view returns(uint){
+        return contractAddress.balance;
+    }
+
 }
 
 contract Campaign {
@@ -27,9 +32,7 @@ contract Campaign {
 
     address public manager;
     uint public minimumContribution;
-    // mapping(address => bool) public approvers;
     uint public contributersCount;
-    uint public contributed;
     mapping(address => uint) contributers;
 
     modifier restricted() {
@@ -46,8 +49,6 @@ contract Campaign {
         require(msg.value > minimumContribution, "the amount should be greater than the minimum contribution");
 
         contributersCount++;
-        uint newContribution = contributed + msg.value;
-        contributed = newContribution;
         contributers[msg.sender] = msg.value;
     }
 
@@ -56,23 +57,13 @@ contract Campaign {
     }
 
     function createRequest(string calldata description, uint value, address payable recipient) public restricted {
-        require(value < contributed, "requested amount can not be greater than the contributed amount");
+        // require(value > address(this).balance, "Can't withdraw more than the available balance");
         Request storage newRequest = requests.push();
         newRequest.description = description;
         newRequest.value = value;
         newRequest.recipient = recipient;
         newRequest.completed = false;
     }
-
-    // function approveRequest(uint index) public {
-    //     Request storage request = requests[index];
-
-    //     require(contributers[msg.sender] > 0);
-    //     require(!request.approvals[msg.sender]);
-
-    //     request.approvals[msg.sender] = true;
-    //     request.approvalCount++;
-    // }
 
     function finalizeRequest(uint index) public restricted {
         Request storage request = requests[index];
@@ -81,4 +72,9 @@ contract Campaign {
         request.recipient.transfer(request.value);
         request.completed = true;
     }
+    
+    function currentContractBalance() public view returns (uint) {
+        return address(this).balance;
+    }
+
 }

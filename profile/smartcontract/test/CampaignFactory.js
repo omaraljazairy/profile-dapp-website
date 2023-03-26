@@ -50,6 +50,20 @@ const {
           expect(contract.deployTransaction.hash).to.be.a('string');
           expect(campaigns).to.have.length(1);
         });
+        it("get campaign balance by providing the campaign address", async function () {
+            const { contract, owner } = await deployContract();
+            // create a new campaign
+            const newCampaignBlock = await contract.createCampaign(2, {from: owner.address});
+            console.log("newCampaignBlock => ", newCampaignBlock);
+            // get the deployed campaigns array
+            campaigns = await contract.getDeployedCampaigns();
+            console.log("campaigns => ", campaigns);
+            campaignAddress = campaigns[0];
+            campaignBalance = await contract.getContractBalance(campaignAddress);
+            console.log("campaignBalance => ", campaignBalance);
+
+            expect(campaignBalance).to.equal(0);
+          });        
       });    
   });
 
