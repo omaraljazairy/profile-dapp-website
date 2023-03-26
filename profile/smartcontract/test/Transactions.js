@@ -28,7 +28,7 @@ const {
       it("Should deploy the transaction", async function () {
         const { transaction, owner } = await deployContract();
         console.log("owner => ", owner.address);
-        // console.log("transaction => ", transaction);
+        console.log("transaction => ", transaction);
         expect(transaction);
       });
     });
@@ -44,7 +44,7 @@ const {
           console.log("transfer transactionBlock=> ", transactionBlock);
           const count = await transaction.getTransactionCount();
           console.log("transactionCount => ", count.toNumber());
-          expect(count.toNumber() == 1);
+          expect(count.toNumber()).to.equal(1);
         });
       });
       describe("call the addToBlockChain 3 time and expect the transactionCount to be 3 ", function () {
@@ -61,7 +61,7 @@ const {
         //   console.log("transfer => ", transfer);
           const count = await transaction.getTransactionCount();
           console.log("transactionCount => ", count.toNumber());
-          expect(count.toNumber() == 3);
+          expect(count.toNumber()).to.equal(3);
         });
       });
       describe("make 2 transactions and getAllTransactions", function () {
@@ -78,8 +78,8 @@ const {
           const allTransactions = await transaction.getAllTransactions();
           console.log("transactionCount => ", count.toNumber());
           console.log("allTransactions => ", allTransactions);
-          expect(count.toNumber() == 2);
-          expect(allTransactions.length == 2);
+          expect(count.toNumber()).to.equal(2);
+          expect(allTransactions.length).to.equal(2);
         });
       });      
   });

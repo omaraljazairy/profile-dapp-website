@@ -21,16 +21,14 @@ contract Campaign {
         uint value;
         address payable recipient;
         bool completed;
-        uint approvalCount;
-        mapping(address => bool) approvals;
     }
 
     Request[] public requests;
 
     address public manager;
     uint public minimumContribution;
-    mapping(address => bool) public approvers;
-    uint public approversCount;
+    // mapping(address => bool) public approvers;
+    uint public contributersCount;
     uint public contributed;
     mapping(address => uint) contributers;
 
@@ -45,10 +43,9 @@ contract Campaign {
     }
 
     function contribute() public payable {
-        require(msg.value > minimumContribution);
+        require(msg.value > minimumContribution, "the amount should be greater than the minimum contribution");
 
-        approvers[msg.sender] = true;
-        approversCount++;
+        contributersCount++;
         uint newContribution = contributed + msg.value;
         contributed = newContribution;
         contributers[msg.sender] = msg.value;
@@ -59,28 +56,26 @@ contract Campaign {
     }
 
     function createRequest(string calldata description, uint value, address payable recipient) public restricted {
-            Request storage newRequest = requests.push();
-            newRequest.description = description;
-            newRequest.value = value;
-            newRequest.recipient = recipient;
-            newRequest.completed = false;
-            newRequest.approvalCount = 0;
+        require(value < contributed, "requested amount can not be greater than the contributed amount");
+        Request storage newRequest = requests.push();
+        newRequest.description = description;
+        newRequest.value = value;
+        newRequest.recipient = recipient;
+        newRequest.completed = false;
     }
 
-    function approveRequest(uint index) public {
-        Request storage request = requests[index];
+    // function approveRequest(uint index) public {
+    //     Request storage request = requests[index];
 
-        require(approvers[msg.sender]);
-        require(!request.approvals[msg.sender]);
+    //     require(contributers[msg.sender] > 0);
+    //     require(!request.approvals[msg.sender]);
 
-        request.approvals[msg.sender] = true;
-        request.approvalCount++;
-    }
+    //     request.approvals[msg.sender] = true;
+    //     request.approvalCount++;
+    // }
 
     function finalizeRequest(uint index) public restricted {
         Request storage request = requests[index];
-
-        require(request.approvalCount > approversCount / 2);
         require(!request.completed);
 
         request.recipient.transfer(request.value);
