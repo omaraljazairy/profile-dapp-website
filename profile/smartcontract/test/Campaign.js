@@ -174,6 +174,32 @@ const {
             expect(isReceived).to.equal(true);
         });
     });
+    describe("getCampaignBalance", function () {
+        it("contribute to the campaign and expect the balance to be 5", async function () {
+            const { contract, owner, account1, account2 } = await deployContract();
+            const contributer1 = account1.address;
+            const contributer2 = account2.address;
+            const transactionBlock1 = await contract.connect(account1).contribute(
+                {
+                  value: 2,
+                  from: contributer1
+                }
+            );
+            const transactionBlock2 = await contract.connect(account2).contribute(
+                {
+                  value: 3,
+                  from: contributer2
+                }
+            );
+            console.log("transfer transactionBlock1 => ", getTransactionData(transactionBlock1));
+            console.log("transfer transactionBlock2 => ", getTransactionData(transactionBlock2));
+
+            const campaignBalance = await contract.currentContractBalance();
+            console.log("campaignBalance => ", campaignBalance);
+
+            expect(campaignBalance.toNumber()).to.equal(5);
+        });
+    });
 });
 
 /**
