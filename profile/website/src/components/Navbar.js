@@ -27,9 +27,12 @@ const Navbar = () => {
                   <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700">
                     <NavLink to='/home' activeStyle={activeClass}>Home</NavLink>
                   </div>
-                  <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700">
+                  {/* <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700">
                     <NavLink to='/skills' activeStyle={activeClass}>Skills</NavLink>
-                  </div>
+                  </div> */}
+                  <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700">
+                    <NavLink to='/campaigns' activeStyle={activeClass}>Campaigns</NavLink>
+                  </div>                  
                   {/* <div className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700">
                     <NavLink to='/test' activeStyle={activeClass}>Test</NavLink>
                   </div>                                     */}

@@ -11,6 +11,7 @@ async function main() {
 // The gas price (in wei)...
   const gasPrice = await waitForGasPriceBelow(hre.ethers.utils.parseUnits('190', 'gwei'));
   const Contract = await hre.ethers.getContractFactory("CampaignFactory");
+  const [owner] = await ethers.getSigners();
   const contract = await Contract.deploy({gasPrice});
 
   await contract.deployed();

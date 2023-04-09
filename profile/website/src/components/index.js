@@ -8,3 +8,7 @@ export { default as Smartcontracts} from './Smartcontracts';
 export { default as Table } from './Table';
 export { default as MyTest } from './MyTest';
 export { default as Test } from './Test';
+export { default as Campaigns } from './Campaigns';
+export { default as CampaignsView } from './CampaignsView';
+export { default as CampaignsCreate } from './CampaignsCreate';
+export { default as CampaignsTable } from './CampaignsTable';

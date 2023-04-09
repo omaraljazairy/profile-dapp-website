@@ -16,7 +16,7 @@ const {
       console.log("account1 => ", account1.address);
       console.log("account2 => ", account2.address);
       const Contract = await ethers.getContractFactory("Campaign");
-      const contract = await Contract.deploy(1, owner.address);
+      const contract = await Contract.deploy(1, owner.address, "testCampaign");
     //   console.log("contract instance => ", campaign.deployTransaction.hash);
   
       return { contract, owner, account1, account2};
@@ -200,6 +200,40 @@ const {
             expect(campaignBalance.toNumber()).to.equal(5);
         });
     });
+    describe("getSummary", function () {
+        it("contribute to the campaign and call the getSummary function", async function () {
+            const { contract, owner, account1, account2 } = await deployContract();
+            const contributer1 = account1.address;
+            const contributer2 = account2.address;
+            const transactionBlock1 = await contract.connect(account1).contribute(
+                {
+                  value: 2,
+                  from: contributer1
+                }
+            );
+            const transactionBlock2 = await contract.connect(account2).contribute(
+                {
+                  value: 3,
+                  from: contributer2
+                }
+            );
+            console.log("transfer transactionBlock1 => ", getTransactionData(transactionBlock1));
+            console.log("transfer transactionBlock2 => ", getTransactionData(transactionBlock2));
+
+            const campaignSummary = await contract.getSummary();
+            console.log("campaignSummary => ", campaignSummary);
+            console.log("owner => ", owner.address);
+            const minimumContribution = campaignSummary[0].toNumber();
+            const campaignBalance = campaignSummary[1].toNumber();
+            const contributorsCount = campaignSummary[2].toNumber();
+            const campaignManager = campaignSummary[3];
+
+            expect(campaignBalance).to.equal(5);
+            expect(minimumContribution).to.equal(1);
+            expect(contributorsCount).to.equal(2);
+            expect(campaignManager).to.equal(owner.address);
+        });
+    });    
 });
 
 /**
