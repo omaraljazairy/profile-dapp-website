@@ -20,7 +20,21 @@ contract CampaignFactory {
 }
 
 contract Campaign {
-    
+
+    event FinalizeRequestEvent(
+        uint index, 
+        address recipient, 
+        uint amount,
+        uint256 closed_at
+    );
+
+    event ContributeEvent(
+        address from, 
+        uint amount, 
+        uint256 timestamp,
+        uint totalContributors
+    );
+
     struct Request {
         string description;
         uint value;
@@ -35,6 +49,10 @@ contract Campaign {
     uint public contributersCount;
     mapping(address => uint) contributers;
     string public campaignName;
+    uint256 lastcontribution_at;
+    uint256 created_at;
+    uint256 closed_at;
+    bool campaignStatus;
 
     modifier restricted() {
         require(msg.sender == manager);
@@ -45,6 +63,8 @@ contract Campaign {
         minimumContribution = minimum;
         manager = user;
         campaignName = name;
+        campaignStatus = false;
+        created_at = block.timestamp;
     }
 
     function contribute() public payable {
@@ -52,6 +72,9 @@ contract Campaign {
 
         contributersCount++;
         contributers[msg.sender] = msg.value;
+        lastcontribution_at = block.timestamp;
+
+        emit ContributeEvent(msg.sender, msg.value, lastcontribution_at, contributersCount);
     }
 
     function getContribution(address contributer) public view returns(uint) {
@@ -73,19 +96,27 @@ contract Campaign {
 
         request.recipient.transfer(request.value);
         request.completed = true;
+        campaignStatus = true;
+        closed_at = block.timestamp;
+
+        emit FinalizeRequestEvent(index, request.recipient, request.value, closed_at);
     }
     
     function currentContractBalance() public view returns (uint) {
         return address(this).balance;
     }
 
-    function getSummary() public view returns (uint, uint, uint, address, string memory) {
+    function getSummary() public view returns (uint, uint, uint, address, string memory, bool, uint256, uint256, uint256) {
         return (
             minimumContribution,
             address(this).balance,
             contributersCount,
             manager,
-            campaignName
+            campaignName,
+            campaignStatus,
+            created_at,
+            lastcontribution_at,
+            closed_at
         );
     }
 
