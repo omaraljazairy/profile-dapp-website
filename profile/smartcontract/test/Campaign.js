@@ -168,10 +168,16 @@ const {
 
             const finalRequest = await contract.requests(0);
             console.log("request 0 after finalize => ", finalRequest);
+            const campaignSummary = await contract.getSummary();
+            const campaignStatus = campaignSummary[5];
+            const closed_at = campaignSummary[8].toNumber();
+            console.log("closed_at => ", closed_at);
 
             expect(contributersCount.toNumber()).to.equal(2);
             expect(finalRequest.completed).to.equal(true);
             expect(isReceived).to.equal(true);
+            expect(campaignStatus).to.equal(true);
+            expect(closed_at).to.be.a('number');
         });
     });
     describe("getCampaignBalance", function () {
@@ -222,67 +228,30 @@ const {
 
             const campaignSummary = await contract.getSummary();
             console.log("campaignSummary => ", campaignSummary);
+            console.log("campaignSummary length => ", campaignSummary.length);
             console.log("owner => ", owner.address);
             const minimumContribution = campaignSummary[0].toNumber();
             const campaignBalance = campaignSummary[1].toNumber();
             const contributorsCount = campaignSummary[2].toNumber();
             const campaignManager = campaignSummary[3];
+            const campaignName = campaignSummary[4];
+            const campaignStatus = campaignSummary[5];
+            const campaignCreated_at = campaignSummary[6].toNumber();
+            const lastcontribution_at = campaignSummary[7].toNumber();
+            const closed_at = campaignSummary[8].toNumber();
+            console.log("campaignCreated_at => ", campaignCreated_at);
+            console.log("lastcontribution_at => ", lastcontribution_at);
 
+            expect(campaignSummary.length).to.equal(9);
             expect(campaignBalance).to.equal(5);
             expect(minimumContribution).to.equal(1);
             expect(contributorsCount).to.equal(2);
             expect(campaignManager).to.equal(owner.address);
+            expect(campaignName).to.equal('testCampaign');
+            expect(campaignStatus).to.equal(false);
+            expect(campaignCreated_at).to.be.a('number');
+            expect(lastcontribution_at).to.be.a('number');
+            expect(closed_at).to.equal(0);
         });
     });    
 });
-
-/**
- * functions: {
-    'approveRequest(uint256)': [Function (anonymous)],
-    'approvers(address)': [Function (anonymous)],
-    'approversCount()': [Function (anonymous)],
-    'contribute()': [Function (anonymous)],
-    'contributed()': [Function (anonymous)],
-    'createRequest(string,uint256,address)': [Function (anonymous)],
-    'finalizeRequest(uint256)': [Function (anonymous)],
-    'getContribution(address)': [Function (anonymous)],
-    'manager()': [Function (anonymous)],
-    'minimumContribution()': [Function (anonymous)],
-    'requests(uint256)': [Function (anonymous)],
-    approveRequest: [Function (anonymous)],
-    approvers: [Function (anonymous)],
-    approversCount: [Function (anonymous)],
-    contribute: [Function (anonymous)],
-    contributed: [Function (anonymous)],
-    createRequest: [Function (anonymous)],
-    finalizeRequest: [Function (anonymous)],
-    getContribution: [Function (anonymous)],
-    manager: [Function (anonymous)],
-    minimumContribution: [Function (anonymous)],
-    requests: [Function (anonymous)]
-  },
-  transfer transactionBlock=>  {
-  hash: '0xf7bc2dc5cc8166a9838a08c3119b75359d25665f244aa4516cc043041cd8ea35',
-  type: 2,
-  accessList: [],
-  blockHash: '0x73f4d4301dbd8c0ba868e2b47323e6ff2959ad2238fbda719384fe2ecda4f4c5',
-  blockNumber: 5,
-  transactionIndex: 0,
-  confirmations: 1,
-  from: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
-  gasPrice: BigNumber { value: "1528671604" },
-  maxPriorityFeePerGas: BigNumber { value: "1000000000" },
-  maxFeePerGas: BigNumber { value: "2057343208" },
-  gasLimit: BigNumber { value: "29021272" },
-  to: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
-  value: BigNumber { value: "3" },
-  nonce: 0,
-  data: '0xd7bb99ba',
-  r: '0x4b3cf9899a0821587f1984f93ec3ac65818c6db81863d41ce0b18863f5a3f2a8',
-  s: '0x25c2143ece30ba2c027808a5b5dd51821b444535b4344a25daa436857489282d',
-  v: 0,
-  creates: null,
-  chainId: 31337,
-  wait: [Function (anonymous)]
-}
- */
