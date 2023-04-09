@@ -41,7 +41,7 @@ const {
         it("should create a campaign successfully", async function () {
           const { contract, owner } = await deployContract();
           // create a new campaign
-          const newCampaignBlock = await contract.createCampaign(1, {from: owner.address});
+          const newCampaignBlock = await contract.createCampaign(1, "temp campaign", {from: owner.address});
           console.log("newCampaignBlock => ", newCampaignBlock);
           // get the deployed campaigns array
           campaigns = await contract.getDeployedCampaigns();
@@ -53,7 +53,7 @@ const {
         it("get campaign balance by providing the campaign address", async function () {
             const { contract, owner } = await deployContract();
             // create a new campaign
-            const newCampaignBlock = await contract.createCampaign(2, {from: owner.address});
+            const newCampaignBlock = await contract.createCampaign(2, "temp campaign", {from: owner.address});
             console.log("newCampaignBlock => ", newCampaignBlock);
             // get the deployed campaigns array
             campaigns = await contract.getDeployedCampaigns();
