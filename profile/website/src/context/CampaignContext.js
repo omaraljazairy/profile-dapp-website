@@ -29,6 +29,7 @@ export const CampaignProvider = ({ children }) => {
     const [connectedAccount, setConnectedAccount] = useState('');
     const [campaignsList, setCampaingsList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isTableLoading, setIsTableLoading] = useState(false);
 
 
     const isWalletConnected = async () => {
@@ -85,6 +86,7 @@ export const CampaignProvider = ({ children }) => {
     const getAllCampaignsList = async () => {
         // get all the campaigns addresses, from the address get the campaign contract instance and
         // store it in the a list.
+        setIsTableLoading(true);
         const contractInstance = getEthereumContract();
         const campaignsList = await contractInstance.getDeployedCampaigns();
         console.log("campaignsList = ", campaignsList);
@@ -99,7 +101,8 @@ export const CampaignProvider = ({ children }) => {
             }
         }
         setCampaingsList(campaignsInfo);
-        console.log("campaignsInfo => ", campaignsInfo); 
+        console.log("campaignsInfo => ", campaignsInfo);
+        setIsTableLoading(false);
     }
 
     const getCampaignDetails = async (campaignAddress) => {
@@ -138,7 +141,8 @@ export const CampaignProvider = ({ children }) => {
                 connectedAccount,
                 campaignsList,
                 isLoading,
-                getAllCampaignsList
+                getAllCampaignsList,
+                isTableLoading
             }
         }>
             {children}

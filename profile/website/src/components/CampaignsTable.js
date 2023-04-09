@@ -1,11 +1,10 @@
 import MaterialReactTable from 'material-react-table';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { shortenAddress } from '../utils/shortenAddress';
 import { Button } from '@mui/material';
 
 
-const CampaignsTable = ({ campaigns, refreshAction }) => {
-  const [isLoading, setIsLoading] = useState(false);
+const CampaignsTable = ({ campaigns, refreshAction, loading }) => {
 
   const columns = useMemo(
     () => [
@@ -51,7 +50,7 @@ const CampaignsTable = ({ campaigns, refreshAction }) => {
   return (
     <MaterialReactTable
       columns={columns}
-      data={campaigns ?? []}
+      data={campaigns}
       enableRowSelection={false}
       enableColumnOrdering
       enableGlobalFilter={true}
@@ -68,7 +67,7 @@ const CampaignsTable = ({ campaigns, refreshAction }) => {
           Refresh
         </Button>
       )}
-      state={{isLoading}}
+      state={{ isLoading: loading }}
     />
   )
 }
