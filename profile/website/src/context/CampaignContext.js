@@ -118,13 +118,21 @@ export const CampaignProvider = ({ children }) => {
         console.log("campaign ", campaignAddress," has contract transaction =>", transactionContract);
         const campaignSummary = await transactionContract.getSummary();
         console.log("campaignSummary => ", campaignSummary);
+        let created_at = new Date(campaignSummary[6].toNumber() * 1000).toLocaleString();
+        let lastcontribution_at = new Date(campaignSummary[7].toNumber() * 1000).toLocaleString();
+        let closed_at = new Date(campaignSummary[8].toNumber() * 1000).toLocaleString();
+
         return {
             address: campaignAddress, 
             minimumContribution: ethers.utils.formatEther(campaignSummary[0]),
             balance: ethers.utils.formatEther(campaignSummary[1]),
             contributersCount: parseInt(campaignSummary[2]),
             manager: campaignSummary[3],
-            campaignName: campaignSummary[4]
+            campaignName: campaignSummary[4],
+            campaignStatus: !String(campaignSummary[5]) ? "Closed": "Open",
+            created_at: new Date(campaignSummary[6].toNumber() * 1000).toLocaleString(),
+            lastcontribution_at: lastcontribution_at > created_at ? lastcontribution_at : "",
+            closed_at: closed_at > created_at ? created_at : ""
         }
     }
 

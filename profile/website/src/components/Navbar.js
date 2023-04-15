@@ -52,10 +52,10 @@ const Navbar = () => {
               </Disclosure.Button>
               <Disclosure.Button
                 as="a"
-                href="/skills"
+                href="/campaigns"
                 className="block py-2 pl-3 pr-4 text-base font-medium text-gray-500 border-l-4 border-transparent hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
               >
-                Skills
+                Campaigns
               </Disclosure.Button>
             </div>
           </Disclosure.Panel>
