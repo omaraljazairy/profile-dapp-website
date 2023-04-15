@@ -1,21 +1,14 @@
 import MaterialReactTable from 'material-react-table';
 import React, { useMemo } from 'react';
 import { shortenAddress } from '../utils/shortenAddress';
-import { Button } from '@mui/material';
+import { Button, Box, Typography } from '@mui/material';
+
 
 
 const CampaignsTable = ({ campaigns, refreshAction, loading }) => {
 
   const columns = useMemo(
     () => [
-      {
-        accessorKey: 'address',
-        header: 'Campaign Address',
-        Cell: ({ cell, row }) => (
-          <a href={"https://goerli.etherscan.io/tx/" + cell.getValue()} target="_blank" rel="noreferrer">{shortenAddress(cell.getValue())}</a>
-        ),
-        muiTableHeadCellProps: { sx: { fontSize: 12, fontWeight: 'bold' } },
-      },
       {
         header: 'Name',
         accessorKey: 'campaignName',
@@ -24,26 +17,23 @@ const CampaignsTable = ({ campaigns, refreshAction, loading }) => {
       {
         header: 'Balance (ETH)',
         accessorKey: 'balance',
-        muiTableHeadCellProps: { sx: { fontSize: 12, fontWeight: 'bold' } },        
-      },
-      {
-        header: 'Total Contributers',
-        accessorKey: 'contributersCount',
-        muiTableHeadCellProps: { sx: { fontSize: 12, fontWeight: 'bold' } },        
-      },
-      {
-        header: 'Min Contribution',
-        accessorKey: 'minimumContribution',
-        muiTableHeadCellProps: { sx: { fontSize: 12, fontWeight: 'bold' } },        
-      },
-      {
-        header: 'Manager',
-        accessorKey: 'manager',
-        Cell: ({ cell, row }) => (
-          shortenAddress(cell.getValue())
-        ),
         muiTableHeadCellProps: { sx: { fontSize: 12, fontWeight: 'bold' } },
-      },      
+      },
+      {
+        header: 'Status',
+        accessorKey: 'campaignStatus',
+        muiTableHeadCellProps: { sx: { fontSize: 12, fontWeight: 'bold' } },
+      },
+      {
+        header: 'Created',
+        accessorKey: 'created_at',
+        muiTableHeadCellProps: { sx: { fontSize: 12, fontWeight: 'bold' } },
+      },
+      {
+        header: 'Closed At',
+        accessorKey: 'closed_at',
+        muiTableHeadCellProps: { sx: { fontSize: 12, fontWeight: 'bold' } },
+      },
     ],
     [],
   );
@@ -68,6 +58,27 @@ const CampaignsTable = ({ campaigns, refreshAction, loading }) => {
         </Button>
       )}
       state={{ isLoading: loading }}
+      defaultColumn={{
+        minSize: 20, //allow columns to get smaller than default
+        maxSize: 9001, //allow columns to get larger than default
+        size: 30, //make columns wider by default
+      }}
+      renderDetailPanel={({ row }) => (
+        <Box
+          sx={{
+            display: 'grid',
+            margin: 'auto',
+            gridTemplateColumns: '1fr 1fr',
+            width: '100%',
+          }}
+        >
+          <Typography>Campaign Address: {shortenAddress(row.original.address)}</Typography>
+          <Typography>Manager: {shortenAddress(row.original.manager)}</Typography>
+          <Typography>Minimum Contribution: {row.original.minimumContribution}</Typography>
+          <Typography>Last Contribution at: {row.original.lastcontribution_at}</Typography>
+          <Typography>Total Contributors: {row.original.contributersCount}</Typography>
+        </Box>
+      )}
     />
   )
 }
