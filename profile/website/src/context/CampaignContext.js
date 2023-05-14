@@ -74,8 +74,9 @@ export const CampaignProvider = ({ children }) => {
             );
             console.log("createdCampaignAddress => ", createdCampaignAddress);
             setIsLoading(false)
-            getAllCampaignsList();
-    
+            // getAllCampaignsList();
+            window.location.reload(true);
+
         } catch (error){
             console.log("Error creating campaign: ", error.message);
             setIsLoading(false);
@@ -86,23 +87,27 @@ export const CampaignProvider = ({ children }) => {
     const getAllCampaignsList = async () => {
         // get all the campaigns addresses, from the address get the campaign contract instance and
         // store it in the a list.
-        setIsTableLoading(true);
-        const contractInstance = getEthereumContract();
-        const campaignsList = await contractInstance.getDeployedCampaigns();
-        console.log("campaignsList = ", campaignsList);
-        let campaignsInfo = [];
-        if (campaignsList) {
-            console.log("campaignList finished => ", campaignsList);
-            for (let i=0; i < campaignsList.length; i++) {
-                console.log("details => ", campaignsList[i]);
-                const details = await getCampaignDetails(campaignsList[i]);
-                campaignsInfo.push(details)
-                console.log("details => ", details);
+        try {
+            const contractInstance = getEthereumContract();
+            const campaignsList = await contractInstance.getDeployedCampaigns();
+            console.log("campaignsList = ", campaignsList);
+            let campaignsInfo = [];
+            if (campaignsList) {
+                setIsTableLoading(true);
+                for (let i=0; i < campaignsList.length; i++) {
+                    console.log("details => ", campaignsList[i]);
+                    const details = await getCampaignDetails(campaignsList[i]);
+                    campaignsInfo.push(details)
+                    console.log("details => ", details);
+                }
             }
+            setCampaingsList(campaignsInfo);
+            console.log("campaignsInfo => ", campaignsInfo);
+            setIsTableLoading(false);
+        } catch (error) {
+            console.log("error: ", error.message);
+            setIsTableLoading(false);
         }
-        setCampaingsList(campaignsInfo);
-        console.log("campaignsInfo => ", campaignsInfo);
-        setIsTableLoading(false);
     }
 
     const getCampaignDetails = async (campaignAddress) => {

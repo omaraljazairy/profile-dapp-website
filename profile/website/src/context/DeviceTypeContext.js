@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { isMobileOnly, isTablet } from 'react-device-detect';
+import { isMobileOnly, isTablet, isBrowser, isMobile } from 'react-device-detect';
+import { deviceTypes } from '../utils/enums';
 
 export const DeviceTypeContext = React.createContext();
 
@@ -9,12 +10,13 @@ export const DeviceTypeProvider = ({ children }) => {
     useEffect(() => {
         const setDevice = () => {
             // checkonly for mobile or table, otherwise its a desktop
+            console.log("isBrowser => ", isBrowser, " - isMobile => ", isMobile);
             if(isTablet) {
-                setDeviceType('TABLET');
+                setDeviceType(deviceTypes.TABLET);
             } else if (isMobileOnly) {
-                setDeviceType('MOBILE');
+                setDeviceType(deviceTypes.MOBILE);
             } else {
-                setDeviceType('DESKTOP');
+                setDeviceType(deviceTypes.DESKTOP);
             }
         }
         setDevice()
