@@ -19,20 +19,20 @@ const CampaignsCreate = () => {
     const { formData, handleChange, createCampaign, isLoading } = useContext(CampaignContext);
 
     const handleSubmit = (e) => {
-        console.log("submit");
         const { minimumContribution, campaignName} = formData;
         e.preventDefault();
 
         if(!minimumContribution || !campaignName) return;
 
-        createCampaign();        
+        createCampaign();
     }
+
     return (
         <div className="flex flex-col items-center justify-between w-full p-4 md:justify-center gradient-bg-footer">
             <div className="flex flex-col items-center justify-center w-full my-4 sm:flex-row">
                 <div className='flex flex-col items-center justify-start w-full p-5 sm:w-96 blue-glassmorphism'>
-                    <Input placeholder="Campaign Name" name="campaignName" type="text" handleChange={handleChange} />
-                    <Input placeholder="Minimum Contribution Amount (ETH)" name="minimumContribution" type="number" handleChange={handleChange} />
+                    <Input placeholder="Campaign Name" name="campaignName" type="text" handleChange={handleChange} id="campaignName" />
+                    <Input placeholder="Minimum Contribution Amount (ETH)" name="minimumContribution" type="number" handleChange={handleChange} id="minimumContribution" />
                     {isLoading ? (
                         <Loader />
                         ) : (

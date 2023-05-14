@@ -1,45 +1,15 @@
 import MaterialReactTable from 'material-react-table';
 import React, { useMemo } from 'react';
-import { shortenAddress } from '../utils/shortenAddress';
+import { Button } from '@mui/material';
 
-const Table = ({ transactions }) => {
-  // console.log("all transactions received => ", transactions);
+const Table = ({ data, columnHeaders, detailPanel, refreshAction, loading }) => {
   const columns = useMemo(
-    () => [
-      {
-        accessorKey: 'transactionHash',
-        header: 'Transaction',
-        Cell: ({ cell, row }) => (
-          <a href={"https://goerli.etherscan.io/tx/" + cell.getValue()} target="_blank" rel="noreferrer">{shortenAddress(cell.getValue())}</a>
-        ),
-      },
-      {
-        header: 'From',
-        accessorKey: 'addressFrom',
-      },
-      {
-        header: 'To',
-        accessorKey: 'addressTo',
-      },
-      {
-        header: 'Message',
-        accessorKey: 'message',
-      },
-      {
-        header: 'Amount (ETH)',
-        accessorKey: 'amount',
-      },
-      {
-        header: 'Sent',
-        accessorKey: 'timestamp',
-      },      
-    ],
-    [],
+    () => columnHeaders
   );
   return (
     <MaterialReactTable
       columns={columns}
-      data={transactions}
+      data={data}
       enableRowSelection={false}
       enableColumnOrdering
       enableGlobalFilter={true}
@@ -50,6 +20,14 @@ const Table = ({ transactions }) => {
           borderColor: '#3351DB',
         }
       }}
+      renderDetailPanel={ detailPanel ? detailPanel: false }
+      renderTopToolbarCustomActions={() => (
+        <Button onClick={() => refreshAction()} variant="contained">
+          Refresh
+        </Button>
+      )}
+      state={{ isLoading: loading }}
+
     />
   )
 }

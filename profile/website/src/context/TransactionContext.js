@@ -29,6 +29,7 @@ export const TransactionProvider = ({ children }) => {
     const [connectedAccount, setConnectedAccount] = useState('');
     const [formData, setFormData] = useState({ addressTo: '', amount: '', message: ''});
     const [isLoading, setIsLoading] = useState(false);
+    const [isTableLoading, setIsTableLoading] = useState(false);
     // const [transactionsCount, setTransactionsCount] = useState(localStorage.getItem('transactionCount'));
     const [transactionsCount, setTransactionsCount] = useState(0);    
     const [transactions, setTransactions] = useState([]);
@@ -51,8 +52,10 @@ export const TransactionProvider = ({ children }) => {
     }
 
     const getAllTransactionsFromContract = async () => {
+        console.log("called")
         try {
             if(!ethereum) return
+            setIsTableLoading(true);
             const contractInstance = getEthereumContract();
             const availableTransactions = await contractInstance.getAllTransactions();
             const structeredTransactions = availableTransactions.map((transaction) => (
@@ -66,8 +69,10 @@ export const TransactionProvider = ({ children }) => {
                 }
             ));
             setTransactions(structeredTransactions);
+            setIsTableLoading(false);
         }catch(error){
             console.error(error.message);
+            setIsTableLoading(false);
         }
     }
 
@@ -184,7 +189,9 @@ export const TransactionProvider = ({ children }) => {
                 isLoading,
                 transactions,
                 balance,
-                network
+                network,
+                getAllTransactionsFromContract,
+                isTableLoading
             }
         }>
             {children}
