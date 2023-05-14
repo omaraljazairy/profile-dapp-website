@@ -4,13 +4,24 @@ import { Card } from '.';
 import { DeviceTypeContext } from '../context/DeviceTypeContext';
 import { Table } from '.';
 import { shortenAddress } from '../utils/shortenAddress';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import { deviceTypes } from '../utils/enums';
+import { Input } from '.';
 
 
 const CampaignsView = () => {
-    const { campaignsList, getAllCampaignsList, isTableLoading } = useContext(CampaignContext);
+    const { campaignsList, getAllCampaignsList, isTableLoading, handleChange, submitContribution } = useContext(CampaignContext);
     const { deviceType } = useContext(DeviceTypeContext);
+
+    const handleSubmit = (e) => {
+      const { contribution, contributor} = formData;
+      e.preventDefault();
+
+      if(!contribution || !contributor) return;
+
+      submitContribution();
+    }
+
     console.log("campaings list received => ", campaignsList);
     console.log("isTableLoading received => ", isTableLoading);
     console.log("Device type => ", deviceType);
@@ -52,11 +63,26 @@ const CampaignsView = () => {
             width: '100%',
           }}
         >
-          <Typography>Campaign Address: {shortenAddress(row.original.address)}</Typography>
-          <Typography>Manager: {shortenAddress(row.original.manager)}</Typography>
-          <Typography>Minimum Contribution: {row.original.minimumContribution}</Typography>
-          <Typography>Last Contribution at: {row.original.lastcontribution_at}</Typography>
-          <Typography>Total Contributors: {row.original.contributersCount}</Typography>
+          <Box>
+            <Typography>Campaign Address: {shortenAddress(row.original.address)}</Typography>
+            <Typography>Manager: {shortenAddress(row.original.manager)}</Typography>
+            <Typography>Minimum Contribution: {row.original.minimumContribution}</Typography>
+            <Typography>Last Contribution at: {row.original.lastcontribution_at}</Typography>
+            <Typography>Total Contributors: {row.original.contributersCount}</Typography>
+          </Box>
+            <Box>
+              <Typography>
+                <Input placeholder="From Address" name="contributor" type="text" handleChange={handleChange} />
+              </Typography>
+              <Typography>
+                <Input placeholder="Contribution Amount (ETH)" name="contribution" type="number" handleChange={handleChange} />
+              </Typography>
+              <Typography>
+                <Button onClick={() => handleSubmit} variant="contained">
+                  Contribute
+                </Button>
+              </Typography>
+            </Box>
         </Box>
       )
 

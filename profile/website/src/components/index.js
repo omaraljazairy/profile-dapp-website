@@ -7,6 +7,7 @@ export { default as Home } from './Home';
 export { default as Smartcontracts} from './Smartcontracts';
 export { default as Table } from './Table';
 export { default as Card } from './Card';
+export { default as Input } from './Inputs';
 export { default as MyTest } from './MyTest';
 export { default as Test } from './Test';
 export { default as Campaigns } from './Campaigns';
