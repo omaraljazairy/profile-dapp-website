@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { Button } from '@mui/material';
 import { shortenAddress } from '../utils/shortenAddress';
+import { Input } from '.';
 
 
-const Card = ({data, refreshAction}) => {
+const Card = ({data, refreshAction, handleSubmit, handleChange}) => {
     const [campaigns, setCampaigns] = useState(data);
 
     useEffect(() => {
@@ -44,10 +45,17 @@ const Card = ({data, refreshAction}) => {
                 <p>Closed At: 
                   <span className="mt-1 text-sm text-blue-500"> {campaign.closed_at}</span>
                 </p>
+                {/* <div> */}
+                  <Input placeholder="Contribution Amount (ETH)" name="contribution" type="number" handleChange={handleChange} />
+                  <Button onClick={(e) => handleSubmit(e, campaign.address)} variant="contained">
+                    Contribute
+                  </Button>
+                {/* <div> */}
                 <hr></hr>
               </div>
               
             ))}
+            <div></div>
           <Button onClick={() => refreshAction()} variant="contained">
             Refresh
           </Button>

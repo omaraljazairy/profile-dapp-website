@@ -1,19 +1,8 @@
 import React, { useContext } from 'react';
 import { CampaignContext } from '../context/CampaignContext';
+import { Input } from '.';
 import { Loader } from '.';
 
-
-const Input = ({ placeholder, name, type, handleChange, value }) => (
-    <input 
-      placeholder={placeholder}
-      name={name} 
-      type={type} 
-      onChange={(event) => handleChange(event.target.value, name)}
-      step="0.0001"
-      value={value}
-      className="w-full p-2 my-2 text-sm text-blue-600 bg-transparent rounded-sm outline-none white-glassmorphism"
-      />
-)
 
 const CampaignsCreate = () => {
     const { formData, handleChange, createCampaign, isLoading } = useContext(CampaignContext);

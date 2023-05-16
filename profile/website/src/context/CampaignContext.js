@@ -25,7 +25,7 @@ const getEthereumContract = () => {
 
 
 export const CampaignProvider = ({ children }) => {
-    const [formData, setFormData] = useState({ minimumContribution: '', campaignName: ''});
+    const [formData, setFormData] = useState({ minimumContribution: '', campaignName: '', contribution: ''});
     const [connectedAccount, setConnectedAccount] = useState('');
     const [campaignsList, setCampaingsList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -59,6 +59,45 @@ export const CampaignProvider = ({ children }) => {
         setFormData((prevState) => ({ ...prevState, [name]: event}));
     }
 
+    const submitContribution = async ( campaignAddress ) => {
+        // contributes eth to a campaign
+        console.log("Contribute with contribution = ", formData.contribution, " campaignAddress = ", campaignAddress);
+        try{
+            setIsLoading(true)
+            const contractInstance = getCampaignContract(campaignAddress);
+            const parsedValue = ethers.utils.parseEther(formData.contribution);
+            const contributionTransaction = await contractInstance.contribute(
+                {
+                    value: parsedValue,
+                    from: connectedAccount
+                }
+            );
+            console.log("contributionTransaction => ", contributionTransaction);
+            setIsLoading(false)
+            // getAllCampaignsList();
+            window.location.reload(true);
+
+        } catch (error){
+            console.log("Error contributing to campaign: ", error.message);
+            setIsLoading(false);
+        }        
+    }
+
+    const getCampaignContract = (campaignAddress) => {
+        // get an instance of the campaign contract.
+        console.log("received campaignAddress => ", campaignAddress);
+        if (!campaignAddress) {
+            return;
+        }
+
+        provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const transactionContract = new ethers.Contract(campaignAddress, campaignABI, signer);
+        console.log("campaign contract Instance => ", transactionContract);
+        
+        return transactionContract;
+    }
+
     const createCampaign = async () => {
         console.log("createCampaign with minimumContribution = ", formData.minimumContribution, " name = ", formData.campaignName);
         try{
@@ -81,7 +120,6 @@ export const CampaignProvider = ({ children }) => {
             console.log("Error creating campaign: ", error.message);
             setIsLoading(false);
         }
-
     }
 
     const getAllCampaignsList = async () => {
@@ -90,19 +128,19 @@ export const CampaignProvider = ({ children }) => {
         try {
             const contractInstance = getEthereumContract();
             const campaignsList = await contractInstance.getDeployedCampaigns();
-            console.log("campaignsList = ", campaignsList);
+            // console.log("campaignsList = ", campaignsList);
             let campaignsInfo = [];
             if (campaignsList) {
                 setIsTableLoading(true);
                 for (let i=0; i < campaignsList.length; i++) {
-                    console.log("details => ", campaignsList[i]);
+                    // console.log("details => ", campaignsList[i]);
                     const details = await getCampaignDetails(campaignsList[i]);
                     campaignsInfo.push(details)
-                    console.log("details => ", details);
+                    // console.log("details => ", details);
                 }
             }
             setCampaingsList(campaignsInfo);
-            console.log("campaignsInfo => ", campaignsInfo);
+            // console.log("campaignsInfo => ", campaignsInfo);
             setIsTableLoading(false);
         } catch (error) {
             console.log("error: ", error.message);
@@ -110,9 +148,10 @@ export const CampaignProvider = ({ children }) => {
         }
     }
 
+
     const getCampaignDetails = async (campaignAddress) => {
         // get an instance of the campaign contract.
-        console.log("received campaignAddress => ", campaignAddress);
+        // console.log("received campaignAddress => ", campaignAddress);
         if (!campaignAddress) {
             return;
         }
@@ -120,9 +159,9 @@ export const CampaignProvider = ({ children }) => {
         const signer = provider.getSigner();
         const transactionContract = new ethers.Contract(campaignAddress, campaignABI, signer);
     
-        console.log("campaign ", campaignAddress," has contract transaction =>", transactionContract);
+        // console.log("campaign ", campaignAddress," has contract transaction =>", transactionContract);
         const campaignSummary = await transactionContract.getSummary();
-        console.log("campaignSummary => ", campaignSummary);
+        // console.log("campaignSummary => ", campaignSummary);
         let created_at = new Date(campaignSummary[6].toNumber() * 1000).toLocaleString();
         let lastcontribution_at = new Date(campaignSummary[7].toNumber() * 1000).toLocaleString();
         let closed_at = new Date(campaignSummary[8].toNumber() * 1000).toLocaleString();
@@ -155,7 +194,8 @@ export const CampaignProvider = ({ children }) => {
                 campaignsList,
                 isLoading,
                 getAllCampaignsList,
-                isTableLoading
+                isTableLoading,
+                submitContribution
             }
         }>
             {children}
