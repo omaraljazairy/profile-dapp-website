@@ -93,7 +93,7 @@ const CampaignsView = () => {
         </Box>
       )
 
-    const loadComponent = (deviceType === deviceTypes.TABLET) ? 
+    const loadComponent = (deviceType === deviceTypes.MOBILE) ? 
       <Card 
         data={campaignsList} 
         refreshAction={getAllCampaignsList}
