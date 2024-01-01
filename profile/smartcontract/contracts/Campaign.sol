@@ -119,5 +119,4 @@ contract Campaign {
             closed_at
         );
     }
-
 }

@@ -7,7 +7,17 @@ Try running some of the following tasks:
 ```shell
 npx hardhat help
 npx hardhat test
+npx hardhat compile
 REPORT_GAS=true npx hardhat test
 npx hardhat node
-npx hardhat run scripts/deploy.js
+npx hardhat run --network goerli scripts/deploy_campaigns.js
+```
+
+# Truffle & Ganache
+## the truffle folder contains the same smartcontracts for hardhat.
+```
+- truffle init # for new project only
+- truffle create contract YourContractName # scaffold a contract
+- truffle create test YourTestName         # scaffold a test
+- truffle compile
 ```

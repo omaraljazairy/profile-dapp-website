@@ -68,3 +68,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## requirements
+.env file with the following variables:
+REACT_APP_TRANSACTION_CONTRACT_ADDRESS=
+REACT_APP_CAMPAIGNFACTORY_CONTRACT_ADDRESS=

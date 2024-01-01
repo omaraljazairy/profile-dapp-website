@@ -13,12 +13,12 @@ const getEthereumContract = () => {
     provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
     const transactionContract = new ethers.Contract(campaignFactoryAddress, campaignFactoryABI, signer);
-
-     console.log({
+    
+    console.log({
         provider,
         signer,
         transactionContract
-     });
+    });
 
      return transactionContract;
 }

@@ -7,26 +7,36 @@ module.exports = {
   networks: {
     goerli: {
       allowUnlimitedContractSize: true,
-      url: process.env.URL,
-      accounts: [process.env.ACCOUNT],
-    },
-    nft_goerli: {
-      url: process.env.ALCHEMY_NFT_URL,
-      accounts: [process.env.PK_NFT]
-    },
-    campaign_goerli: {
       chainId: 5,
       gas: 101349953465,
-      allowUnlimitedContractSize: true,
-      url: process.env.ALCHEMY_CAMPAIGN_URL,
-      accounts: [process.env.ACCOUNT]
+      gasLimit: 101349953465,
+      url: process.env.GOERLI_API_KEY_URL,
+      accounts: [process.env.GOERLI_1_ACCOUNT_PRIVATE_KEY],
     },
+    // nft_goerli: {
+    //   url: process.env.ALCHEMY_NFT_URL,
+    //   accounts: [process.env.PK_NFT]
+    // },
     campaign_sepolia: {
       chainId: 11155111,
-      gas: 101349953465,
+      gas: 201349953465,
+      gasLimit: 101349953463,
       allowUnlimitedContractSize: true,
-      url: process.env.ALCHEMY_CAMPAIGN_URL,
-      accounts: [process.env.ACCOUNT_SEPOLIA]
+      url: process.env.SEPOLIA_API_KEY_URL,
+      accounts: [process.env.SEPOLIA_1_ACCOUNT_PRIVATE_KEY]
+    },
+    transaction_sepolia: {
+      chainId: 11155111,
+      gas: 201349953465,
+      gasLimit: 101349953463,
+      allowUnlimitedContractSize: true,
+      url: process.env.SEPOLIA_TRANSACTIONS_API_KEY_URL,
+      accounts: [process.env.SEPOLIA_TRANSACTIONS_ACCOUNT_PRIVATE_KEY]
+    },
+    localhost_node: {
+      chainId: 5777,
+      url: 'http://0.0.0.0:8545',
+      accounts: ['0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e']
     },
   }
 };

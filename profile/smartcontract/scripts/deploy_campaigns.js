@@ -36,7 +36,7 @@ async function waitForGasPriceBelow(max) {
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch((error) => {
-  console.error(error);
+  console.error(error.message);
   process.exitCode = 1;
 });
 
